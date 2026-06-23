@@ -11,7 +11,8 @@ import { authClient } from "@/lib/auth-client";
 const Navber = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const { data: session, isPending } = authClient.useSession();
-    const { name, email, photoUrl } = session?.user || {};
+    const { name, email, image } = session?.user || {};
+    
     const logOut = async () => {
         await authClient.signOut();
     }
@@ -37,10 +38,10 @@ const Navber = () => {
                         <Dropdown.Trigger className="rounded-full">
                             <Avatar>
                                 <Avatar.Image
-                                    alt="Junior Garcia"
-                                    src={photoUrl}
+                                    alt={name}
+                                    src={image}
                                 />
-                                <Avatar.Fallback delayMs={600}>JD</Avatar.Fallback>
+                                <Avatar.Fallback delayMs={600}>{name}</Avatar.Fallback>
                             </Avatar>
                         </Dropdown.Trigger>
                         <Dropdown.Popover>
@@ -48,10 +49,10 @@ const Navber = () => {
                                 <div className="flex items-center gap-2">
                                     <Avatar size="sm">
                                         <Avatar.Image
-                                            alt='lal'
-                                            src={photoUrl}
+                                            alt={name}
+                                            src={image}
                                         />
-                                        <Avatar.Fallback delayMs={600}>JD</Avatar.Fallback>
+                                        <Avatar.Fallback delayMs={600}>{name}</Avatar.Fallback>
                                     </Avatar>
                                     <div className="flex flex-col gap-0">
                                         <p className="text-sm leading-5 font-medium">{name}</p>
@@ -77,7 +78,6 @@ const Navber = () => {
                                 <Dropdown.Item onClick={logOut} id="logout" textValue="Logout" variant="danger">
                                     <IoIosLogOut className="size-3.5 text-muted" />
                                     <Label>Log Out</Label>
-
                                 </Dropdown.Item>
                             </Dropdown.Menu>
                         </Dropdown.Popover>

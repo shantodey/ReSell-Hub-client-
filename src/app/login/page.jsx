@@ -12,7 +12,7 @@ const LoginPage = () => {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isGoogleLoading, setIsGoogleLoading] = useState(false);
 
-    async function handleSubmit(e) {
+    const handleSubmit=async(e)=> {
         e.preventDefault();
         setFormError("");
         const formData = new FormData(e.currentTarget);

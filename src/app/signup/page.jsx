@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import { Form, TextField, InputGroup, Label, Description, FieldError, RadioGroup, Radio, Button, Avatar, Spinner } from "@heroui/react";
 import { FiUser, FiMail, FiPhone, FiCamera, FiShoppingBag, FiTag, FiCheck, FiArrowRight, FiAlertCircle } from "react-icons/fi";
 import { authClient } from "@/lib/auth-client";
+import { useForm, SubmitHandler, } from "react-hook-form"
 
 const IMGBB_API_KEY = process.env.NEXT_PUBLIC_IMG_UPLOAD_API;
 const IMGBB_UPLOAD_URL = "https://api.imgbb.com/1/upload";
@@ -16,6 +17,7 @@ const roleControlClass =
     "mt-0.5 shrink-0 border-border group-hover:border-accent data-[selected=true]:border-accent data-[selected=true]:bg-accent";
 
 export default function SignupPage() {
+
 
     const fileInputRef = useRef(null);
     const [photoUrl, setPhotoUrl] = useState(null);
@@ -72,41 +74,31 @@ export default function SignupPage() {
             setIsUploading(false);
         }
     }
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        setFormError("");
-
-        if (!photoUrl) {
-            setPhotoError("Add a profile photo to continue.");
-            return;
-        }
+    const { register, handleSubmit, formState: { errors } } = useForm();
+    const onSubmit = async (data) => {
         setIsSubmitting(true);
-
+        setFormError(""); 
+        const payload = {
+            ...data,
+            image: photoUrl,
+            callbackURL: "/"
+        };
         try {
-            const formData = new FormData(e.currentTarget);
-            const { data, error } = await authClient.signUp.email({
-                email: formData.get("email")?.toString(),
-                password: formData.get("password")?.toString().trim(),
-                name: formData.get("fullName")?.toString().trim(),
-                phone: formData.get("phone")?.toString().trim(),
-                role: formData.get("role")?.toString(),
-                photoUrl,
-                callbackURL: "/"
-            });
-
+            console.log("Submitting to Better Auth:", payload);
+            const { data: singUpData, error } = await authClient.signUp.email(payload);
             if (error) {
                 throw new Error(error.message || "Signup failed.");
             }
-
-            console.log("Signup payload:", data);
-            setIsDone(true);
+            console.log("Signup success:", singUpData);
+            setIsDone(true); 
 
         } catch (err) {
+            console.error("Signup error:", err.message);
             setFormError(err.message || "Something went wrong. Please try again.");
         } finally {
             setIsSubmitting(false);
         }
-    }
+    };
 
     if (isDone) {
         return (
@@ -132,7 +124,7 @@ export default function SignupPage() {
                     <p className="text-sm text-muted">Join as a buyer or a seller — it takes less than a minute.</p>
                 </div>
 
-                <Form className="flex w-full flex-col gap-6" onSubmit={handleSubmit}>
+                <Form className="flex w-full flex-col gap-6" onSubmit={handleSubmit(onSubmit)}>
                     {/* Photo */}
                     <div className="flex items-center gap-4">
                         <div className="relative">
@@ -194,7 +186,7 @@ export default function SignupPage() {
                             <InputGroup.Prefix>
                                 <FiUser className="size-4 text-muted" />
                             </InputGroup.Prefix>
-                            <InputGroup.Input placeholder="Jordan Rivera" />
+                            <InputGroup.Input {...register("name", { required: " Your name is required" })} placeholder="Jordan Rivera" />
                         </InputGroup>
                         <FieldError className="mt-1 text-xs text-danger">Enter your full name.</FieldError>
                     </TextField>
@@ -206,17 +198,18 @@ export default function SignupPage() {
                             <InputGroup.Prefix>
                                 <FiMail className="size-4 text-muted" />
                             </InputGroup.Prefix>
-                            <InputGroup.Input placeholder="you@example.com" />
+                            <InputGroup.Input {...register("email", { required: " Enter your email address" })} />
                         </InputGroup>
                         <FieldError className="mt-1 text-xs text-danger">Enter a valid email address.</FieldError>
                     </TextField>
+                    {/* Passwrod */}
                     <TextField isRequired type="password" name="password" fullWidth>
                         <Label className="text-sm font-medium text-foreground">Password</Label>
                         <InputGroup fullWidth className="mt-1.5">
                             <InputGroup.Prefix>
                                 <FiMail className="size-4 text-muted" />
                             </InputGroup.Prefix>
-                            <InputGroup.Input />
+                            <InputGroup.Input {...register("password", { required: " password name is required", mixLength: 12, minLength: 6 })} />
                         </InputGroup>
                         <FieldError className="mt-1 text-xs text-danger">Enter a valid email address.</FieldError>
                     </TextField>
@@ -228,48 +221,17 @@ export default function SignupPage() {
                             <InputGroup.Prefix>
                                 <FiPhone className="size-4 text-muted" />
                             </InputGroup.Prefix>
-                            <InputGroup.Input placeholder="+880 1XXX XXXXXX" pattern="^[0-9+\-\s()]{7,20}$" />
+                            <InputGroup.Input {...register("phone", { required: " phone name is required" })} />
                         </InputGroup>
                         <FieldError className="mt-1 text-xs text-danger">Enter a valid phone number.</FieldError>
                     </TextField>
 
-                    {/* Role */}
-                    <RadioGroup isRequired name="role">
-                        <Label className="text-sm font-medium text-foreground">I want to join as a</Label>
-                        <div className="mt-2 grid grid-cols-1 gap-3 sm:grid-cols-2">
-                            <Radio value="buyer" className={roleCardClass}>
-                                <Radio.Control className={roleControlClass}>
-                                    <Radio.Indicator />
-                                </Radio.Control>
-                                <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-default text-foreground">
-                                    <FiShoppingBag className="size-4" />
-                                </span>
-                                <Radio.Content>
-                                    <Label className="font-medium text-foreground">Buyer</Label>
-                                    <Description className="text-sm text-muted">Browse listings, message sellers</Description>
-                                </Radio.Content>
-                            </Radio>
 
-                            <Radio value="seller" className={roleCardClass}>
-                                <Radio.Control className={roleControlClass}>
-                                    <Radio.Indicator />
-                                </Radio.Control>
-                                <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-default text-foreground">
-                                    <FiTag className="size-4" />
-                                </span>
-                                <Radio.Content>
-                                    <Label className="font-medium text-foreground">Seller</Label>
-                                    <Description className="text-sm text-muted">List items, manage offers</Description>
-                                </Radio.Content>
-                            </Radio>
-                        </div>
-                        <FieldError className="mt-2 text-xs text-danger">Select a role to continue.</FieldError>
-                    </RadioGroup>
-
-                    {formError ? (
-                        <p className="rounded-xl bg-danger/10 px-4 py-2.5 text-sm text-danger">{formError}</p>
-                    ) : null}
-
+                    <select {...register("role", { required: "Role is required" })}>
+                        <option value="">Select user type</option>
+                        <option value="seller">Sell</option>
+                        <option value="buyer">Buyer</option>
+                    </select>
                     <Button type="submit" fullWidth isPending={isSubmitting} className="gap-2">
                         Create account
                         <FiArrowRight className="size-4" />
