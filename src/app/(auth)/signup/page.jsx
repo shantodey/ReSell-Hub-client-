@@ -209,7 +209,7 @@ export default function SignupPage() {
                             <InputGroup.Prefix>
                                 <FiMail className="size-4 text-muted" />
                             </InputGroup.Prefix>
-                            <InputGroup.Input {...register("password", { required: " password name is required", mixLength: 12, minLength: 6 })} />
+                            <InputGroup.Input {...register("password", { required: " password name is required", mixLength: 12, minLength: 8 })} />
                         </InputGroup>
                         <FieldError className="mt-1 text-xs text-danger">Enter a valid email address.</FieldError>
                     </TextField>
@@ -229,7 +229,7 @@ export default function SignupPage() {
 
                     <select {...register("role", { required: "Role is required" })}>
                         <option value="">Select user type</option>
-                        <option value="seller">Sell</option>
+                        <option value="seller">Seller</option>
                         <option value="buyer">Buyer</option>
                     </select>
                     <Button type="submit" fullWidth isPending={isSubmitting} className="gap-2">
