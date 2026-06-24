@@ -29,9 +29,9 @@ const Navber = () => {
                 </div>
                 <ul className="hidden items-center gap-4 md:flex">
                     <li><Link href={'/'}>Home</Link></li>
-                    <li><Link href="#">Prodect</Link></li>
+                    <li><Link href={'/prodect'}>Prodect</Link></li>
                     <li><Link href="#">Categories</Link></li>
-                    <li><Link href="#">Dashboard</Link></li>
+                    <li><Link href={'/dashboard'}>Dashboard</Link></li>
                 </ul>
                 {session?.user ? (
                     <Dropdown>
