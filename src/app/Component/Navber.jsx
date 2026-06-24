@@ -7,12 +7,12 @@ import { FiShoppingCart, FiUser } from "react-icons/fi";
 import { IoSettingsOutline } from "react-icons/io5";
 import Link from "next/link";
 import { authClient } from "@/lib/auth-client";
+import Image from "next/image";
 
 const Navber = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const { data: session, isPending } = authClient.useSession();
-    const { name, email, image } = session?.user || {};
-    
+    const { name, email, image, role } = session?.user || {};
     const logOut = async () => {
         await authClient.signOut();
     }
@@ -31,16 +31,13 @@ const Navber = () => {
                     <li><Link href={'/'}>Home</Link></li>
                     <li><Link href={'/prodect'}>Prodect</Link></li>
                     <li><Link href="#">Categories</Link></li>
-                    <li><Link href={'/dashboard'}>Dashboard</Link></li>
+                    <li>{isPending ? (<span>Dashboard</span>) : (<Link href={`/dashboard/${role}`}>Dashboard</Link>)}</li>
                 </ul>
                 {session?.user ? (
                     <Dropdown>
                         <Dropdown.Trigger className="rounded-full">
                             <Avatar>
-                                <Avatar.Image
-                                    alt={name}
-                                    src={image}
-                                />
+                                    <Image src={image} alt={name}  fill  sizes="40px"  className="rounded-full object-cover"/>
                                 <Avatar.Fallback delayMs={600}>{name}</Avatar.Fallback>
                             </Avatar>
                         </Dropdown.Trigger>
@@ -83,15 +80,15 @@ const Navber = () => {
                         </Dropdown.Popover>
                     </Dropdown>
                 ) : <ul>
-                        <li className="bg-blue-500 text-white px-2">
-                            <Link href={'/login'}>Login</Link>
-                            /
-                            <Link href={'/signup'}>Register</Link>
-                        </li>
-                    </ul>
+                    <li className="bg-blue-500 text-white px-2">
+                        <Link href={'/login'}>Login</Link>
+                        /
+                        <Link href={'/signup'}>Register</Link>
+                    </li>
+                </ul>
                 }
             </header>
-            
+
             {isMenuOpen && (
                 <div className="border-t border-separator md:hidden">
                     <ul className="flex flex-col gap-2 p-4">

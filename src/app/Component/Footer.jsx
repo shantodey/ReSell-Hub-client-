@@ -47,7 +47,7 @@ const Footer = () => {
                         </div>
                     </div>
 
-                    <p className="text-sm text-slate-400 font-normal leading-relaxed max-w-[240px]">
+                    <p className="text-sm text-slate-400 font-normal leading-relaxed max-w-60">
                         A community marketplace for buying and selling quality pre-owned products.
                     </p>
 

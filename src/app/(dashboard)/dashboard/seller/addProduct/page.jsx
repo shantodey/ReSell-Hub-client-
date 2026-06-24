@@ -5,6 +5,7 @@ import { Form, TextField, InputGroup, Label, FieldError, Button, Spinner } from 
 import { FiPlus, FiTrash2, FiTag, FiDollarSign, FiInfo, FiLayers, FiCamera } from "react-icons/fi";
 import { useForm } from "react-hook-form";
 import { authClient } from '@/lib/auth-client';
+import { addProdectItems } from '@/lib/api/seller/action';
 
 const IMGBB_API_KEY = process.env.NEXT_PUBLIC_IMG_UPLOAD_API;
 const IMGBB_UPLOAD_URL = "https://api.imgbb.com/1/upload";
@@ -21,7 +22,7 @@ const ADDProductPage = () => {
     // user data
     const { data: session } = authClient.useSession();
     const { name, email, _id } = session?.user || {};
-    const mockSellerInfo = { userId: _id, name: name,  email: email, phone: "+8801812345678"};
+    const sellerInfo = { userId: _id, name: name,  email: email, phone: "+8801812345678"};
 
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
 
@@ -85,7 +86,6 @@ const ADDProductPage = () => {
         setIsSubmitting(true);
         setFormError("");
 
-        // প্রোভাইড করা ডাটা স্কিমা অনুযায়ী পেলোড স্ট্রাকচার
         const payload = {
             title: data.title,
             category: data.category,
@@ -93,15 +93,14 @@ const ADDProductPage = () => {
             price: Number(data.price),
             images: images,
             description: data.description,
-            sellerInfo: mockSellerInfo,
+            sellerInfo: sellerInfo,
             status: "available"
         };
 
         try {
-            console.log("Submitting Product Payload:", payload);
-
-            // এখানে তোমার API রাউট কল হবে (যেমন: axios.post('/api/products', payload))
-            // এক্সাম্পল সাকসেস সিমুলেশন:
+            
+            const resData=await addProdectItems(payload)
+            console.log("Submitting Product Payload:", resData);
             await new Promise((resolve) => setTimeout(resolve, 1500));
 
             setIsSuccess(true);
@@ -119,7 +118,7 @@ const ADDProductPage = () => {
             <div className="flex min-h-[60vh] items-center justify-center bg-white px-6">
                 <div className="flex w-full max-w-md flex-col items-center gap-4 rounded-2xl border border-slate-100 p-8 text-center shadow-sm">
                     <div className="flex h-12 w-12 items-center justify-center rounded-full bg-emerald-50 text-emerald-600">
-                        <FiPlus className="h-6 w-6 rotate-45" /> {/* সিম্পল সাকসেস ইন্ডিকেটর */}
+                        <FiPlus className="h-6 w-6 rotate-45" /> 
                     </div>
                     <h2 className="text-2xl font-bold text-slate-900">Product Listed Successfully!</h2>
                     <p className="text-sm text-slate-500">Your product is now live and available for buyers.</p>
@@ -167,7 +166,7 @@ const ADDProductPage = () => {
                                     </label>
                                     <select
                                         {...register("category", { required: "Category is required" })}
-                                        className="w-full bg-white border border-slate-200 h-[40px] px-3 rounded-xl text-sm font-medium text-slate-800 outline-none focus:border-blue-600 transition-colors"
+                                        className="w-full bg-white border border-slate-200 h-10 px-3 rounded-xl text-sm font-medium text-slate-800 outline-none focus:border-blue-600 transition-colors"
                                     >
                                         <option value="">Select Category</option>
                                         <option value="Electronics">Electronics</option>
@@ -185,7 +184,7 @@ const ADDProductPage = () => {
                                     </label>
                                     <select
                                         {...register("condition", { required: "Condition is required" })}
-                                        className="w-full bg-white border border-slate-200 h-[40px] px-3 rounded-xl text-sm font-medium text-slate-800 outline-none focus:border-blue-600 transition-colors"
+                                        className="w-full bg-white border border-slate-200 h-10 px-3 rounded-xl text-sm font-medium text-slate-800 outline-none focus:border-blue-600 transition-colors"
                                     >
                                         <option value="">Select Condition</option>
                                         <option value="Excellent">Excellent (Like New)</option>
@@ -221,7 +220,7 @@ const ADDProductPage = () => {
                                 <div className="grid grid-cols-4 gap-3 mb-2">
                                     {images.map((url, index) => (
                                         <div key={index} className="relative aspect-square rounded-xl border border-slate-200 overflow-hidden bg-slate-50 group">
-                                            <img src={url} alt="Product view" className="h-full w-full object-cover" />
+                                            <image src={url} alt="Product view" className="h-full w-full object-cover" />
                                             <button
                                                 type="button"
                                                 onClick={() => removeImage(index)}

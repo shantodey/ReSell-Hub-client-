@@ -72,7 +72,7 @@ const SellerDashboardPage = () => {
                         <tbody className="divide-y divide-slate-100 font-medium text-slate-600">
                             {recentProducts.map((product) => (
                                 <tr key={product.id} className="hover:bg-slate-50/50 transition-colors">
-                                    <td className="p-4 pl-6 font-bold text-slate-900 max-w-[240px] truncate">{product.name}</td>
+                                    <td className="p-4 pl-6 font-bold text-slate-900 max-w-60truncate">{product.name}</td>
                                     <td className="p-4 text-slate-500">{product.category}</td>
                                     <td className="p-4 font-bold text-slate-900">{product.price}</td>
                                     <td className="p-4">{product.sales} sold</td>
