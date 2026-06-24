@@ -18,9 +18,9 @@
 
         const sellerMenuItems = [
             { id: 'Overview', label: 'Overview', icon: <FiGrid className="text-lg" />, path: '/dashboard/seller' },
-            { id: 'Add Product', label: 'Add Product', icon: <FiPlusCircle className="text-lg" />, path: '/dashboard/seller/add-product' },
-            { id: ' My Products', label: 'My Products', icon: <FiLayers className="text-lg" />, path: '/dashboard/seller/my-products' },
-            { id: 'Manage Orders', label: 'Manage Orders', icon: <FiCheckSquare className="text-lg" />, path: '/dashboard/seller/manage-orders' },
+            { id: 'Add Product', label: 'Add Product', icon: <FiPlusCircle className="text-lg" />, path: '/dashboard/seller/addProduct' },
+            { id: ' My Products', label: 'My Products', icon: <FiLayers className="text-lg" />, path: '/dashboard/seller/myProducts' },
+            { id: 'Manage Orders', label: 'Manage Orders', icon: <FiCheckSquare className="text-lg" />, path: '/dashboard/seller/manageOrders' },
             { id: 'Sales Analytics', label: 'Sales Analytics', icon: <FiPieChart className="text-lg" />, path: '/dashboard/seller/analytics' },
             { id: 'Profile Management', label: 'Profile Settings', icon: <FiUser className="text-lg" />, path: '/dashboard/seller/profile' },
         ];
