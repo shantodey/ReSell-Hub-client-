@@ -198,7 +198,7 @@ const ADDProductPage = () => {
 
                             {/* Price Input */}
                             <TextField isRequired type="number" name="price" fullWidth>
-                                <Label className="text-sm font-semibold text-slate-700">Price (BDT / USD)</Label>
+                                <Label className="text-sm font-semibold text-slate-700">Price (BDT )</Label>
                                 <InputGroup fullWidth className="mt-1.5">
                                     <InputGroup.Prefix><FiDollarSign className="h-4 w-4 text-slate-400" /></InputGroup.Prefix>
                                     <InputGroup.Input

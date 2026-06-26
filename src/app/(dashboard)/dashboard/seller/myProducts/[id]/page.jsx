@@ -14,7 +14,7 @@ const ProductDetailsPage = () => {
   const [editData, setEditData] = useState({ title: "", price: 0, quantity: 0, description: "" });
   const { register, handleSubmit, reset, formState: { errors } } = useForm();
   useEffect(() => {
-    fetch(`http://localhost:5000/app/product/${id}`)
+    fetch(`${process.env.SERVER_URL}/app/product/${id}`)
       .then((res) => res.json())
       .then((data) => {
         setProduct(data);
