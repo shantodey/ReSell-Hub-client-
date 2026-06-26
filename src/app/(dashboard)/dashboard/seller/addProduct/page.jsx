@@ -94,7 +94,7 @@ const ADDProductPage = () => {
             images: images,
             description: data.description,
             sellerInfo: sellerInfo,
-            status: "available"
+            status: "pending"
         };
 
         try {

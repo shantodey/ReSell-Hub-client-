@@ -9,8 +9,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 export default function ProductCard({ product }) {
-    const { title, category, condition, price, images, sellerInfo ,_id } = product;
-    const router = useRouter();
+    const { title, category, condition, price, images ,_id } = product;
     const { data: session, isPending } = authClient.useSession();
     const { name, image } = session?.user || {};
     return (
