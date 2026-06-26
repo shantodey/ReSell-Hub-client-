@@ -1,7 +1,7 @@
 export const prodectData = async (filters = {}) => {
     const { search = "", category = "", sort = "" } = filters;
     const queryParams = new URLSearchParams({ search, category, sort }).toString();
-    const url = `http://localhost:5000/app/product?${queryParams}`;
+    const url = `${process.env.SERVER_URL}/app/product?${queryParams}`;
     try {
         const res = await fetch(url, {
             method: "GET",
@@ -20,3 +20,16 @@ export const prodectData = async (filters = {}) => {
         return []; 
     }
 };
+
+export const getSingleProduct=async(id)=> {
+    try {
+        const res = await fetch(`${process.env.SERVER_URL}/app/product/${id}`, {
+            cache: "no-store",
+        });
+        if (!res.ok) return null;
+        return res.json();
+    } catch (error) {
+        console.error("Error fetching single product:", error);
+        return null;
+    }
+}
