@@ -41,7 +41,7 @@ const Sidebar = () => {
         await authClient.signOut();
     }
     return (
-        <aside className="w-64 h-screen bg-white border-r border-slate-200/80 flex flex-col justify-between shadow-sm select-none">
+        <aside className="w-64 h-screen bg-white border-r border-slate-200/80 flex flex-col justify-between shadow-sm select-none ">
             <div>
                 <div className="h-20 flex items-center px-6 border-b border-slate-100">
                     <div className="flex items-center gap-3">

@@ -5,11 +5,14 @@ import { Card, Button, Avatar } from "@heroui/react";
 import { FaStar } from "react-icons/fa";
 import Image from "next/image";
 import { authClient } from "@/lib/auth-client";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function ProductCard({ product }) {
-    const { title, category, condition, price, images, sellerInfo } = product;
+    const { title, category, condition, price, images, sellerInfo ,_id } = product;
+    const router = useRouter();
     const { data: session, isPending } = authClient.useSession();
-    const { name, image  } = session?.user || {};
+    const { name, image } = session?.user || {};
     return (
         <Card className="w-full bg-white border border-slate-200 rounded-2xl p-0 shadow-none hover:shadow-lg transition-shadow">
 
@@ -41,9 +44,10 @@ export default function ProductCard({ product }) {
                     </div>
                 </div>
 
-                <Button fullWidth className="mt-4 bg-blue-50 text-blue-600 font-bold text-xs h-9">
-                    View Details
-                </Button>
+                <Link color="primary" href={`/prodect/${_id}`}>
+                    <Button fullWidth className="mt-4 bg-blue-50 text-blue-600 font-bold text-xs h-9">View Details</Button>
+                </Link>
+                
             </div>
         </Card>
     );

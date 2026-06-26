@@ -71,7 +71,6 @@ const ADDProductPage = () => {
         }
     };
 
-    // আপলোড করা ইমেজ রিমুভ করার হ্যান্ডলার
     const removeImage = (indexToRemove) => {
         setImages((prev) => prev.filter((_, index) => index !== indexToRemove));
     };
@@ -91,6 +90,7 @@ const ADDProductPage = () => {
             category: data.category,
             condition: data.condition,
             price: Number(data.price),
+            quantity: Number(data.quantity),
             images: images,
             description: data.description,
             sellerInfo: sellerInfo,
@@ -209,6 +209,17 @@ const ADDProductPage = () => {
                                 </InputGroup>
                                 {errors.price && <FieldError className="mt-1 text-xs text-rose-600">{errors.price.message}</FieldError>}
                             </TextField>
+                            {/* quantity input */}
+                            <TextField isRequired type="number" name="quantity" fullWidth>
+                                <Label className="text-sm font-semibold text-slate-700">Quantity</Label>
+                                <InputGroup fullWidth className="mt-1.5">
+                                    <InputGroup.Prefix><FiDollarSign className="h-4 w-4 text-slate-400" /></InputGroup.Prefix>
+                                    <InputGroup.Input  placeholder="5" className="text-slate-800"
+                                        {...register("quantity", { required: "quantity is required", min: { value: 1, message: "quantity must be greater than 0" } })}
+                                    />
+                                </InputGroup>
+                                {errors.quantity && <FieldError className="mt-1 text-xs text-rose-600">{errors.quantity.message}</FieldError>}
+                            </TextField>
 
                             {/* Multiple Image Upload Component */}
                             <div className="flex flex-col gap-2">
@@ -220,7 +231,7 @@ const ADDProductPage = () => {
                                 <div className="grid grid-cols-4 gap-3 mb-2">
                                     {images.map((url, index) => (
                                         <div key={index} className="relative aspect-square rounded-xl border border-slate-200 overflow-hidden bg-slate-50 group">
-                                            <image src={url} alt="Product view" className="h-full w-full object-cover" />
+                                            <img src={url} alt="Product view" className="h-full w-full object-cover" />
                                             <button
                                                 type="button"
                                                 onClick={() => removeImage(index)}

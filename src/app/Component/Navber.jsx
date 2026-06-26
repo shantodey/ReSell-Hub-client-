@@ -13,6 +13,8 @@ const Navber = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const { data: session, isPending } = authClient.useSession();
     const { name, email, image, role } = session?.user || {};
+    console.log(session);
+    
     const logOut = async () => {
         await authClient.signOut();
     }
