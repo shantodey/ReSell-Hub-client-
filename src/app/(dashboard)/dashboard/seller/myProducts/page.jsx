@@ -21,8 +21,7 @@ const MyProductPage = () => {
     const fetchProducts = async () => {
       try {
         setLoading(true); setError("");
-        const response = await fetch(
-          `http://localhost:5000/app/my-products?email=${userEmail}`,
+        const response = await fetch(`http://localhost:5000/app/my-products?email=${userEmail}`,
           {
             signal: controller.signal,
           }
@@ -31,6 +30,8 @@ const MyProductPage = () => {
           throw new Error("Failed to fetch products");
         }
         const data = await response.json();
+        console.log(data);
+        
         setProducts(Array.isArray(data) ? data : []);
       } catch (err) {
         if (err.name !== "AbortError") {
