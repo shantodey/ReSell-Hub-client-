@@ -8,7 +8,7 @@ import { IoSettingsOutline } from "react-icons/io5";
 import Link from "next/link";
 import { authClient } from "@/lib/auth-client";
 import Image from "next/image";
-
+import logo from '../../assets/logo.png'
 const Navber = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const { data: session, isPending } = authClient.useSession();
@@ -27,7 +27,7 @@ const Navber = () => {
                         <span className="sr-only">Menu</span>
                         {isMenuOpen ? (<IoMdClose />) : (<CiMenuFries />)}
                     </button>
-                    <div>ReSell Hub</div>
+                    <Image src={logo} alt='logo'  height={40} width={70}/>
                 </div>
                 <ul className="hidden items-center gap-4 md:flex">
                     <li><Link href={'/'}>Home</Link></li>

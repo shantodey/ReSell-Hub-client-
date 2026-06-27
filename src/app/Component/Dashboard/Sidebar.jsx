@@ -7,6 +7,7 @@ import { FiGrid, FiShoppingBag, FiHeart, FiCreditCard, FiUser, FiLogOut, FiChevr
 import { authClient } from '@/lib/auth-client';
 import Link from 'next/link';
 import Image from 'next/image';
+import logo from '../../../assets/logo.png'
 const Sidebar = () => {
     const [activeItem, setActiveItem] = useState('Overview');
     const buyerMenuItems = [
@@ -43,13 +44,10 @@ const Sidebar = () => {
     return (
         <aside className="w-64 h-screen bg-white border-r border-slate-200/80 flex flex-col justify-between shadow-sm select-none ">
             <div>
-                <div className="h-20 flex items-center px-6 border-b border-slate-100">
-                    <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white font-black text-xl shadow-md shadow-blue-200"> R</div>
-                        <span className="text-xl font-black tracking-tight text-slate-900">
-                            ReSell<span className="text-blue-600">Hub</span>
-                        </span>
-                    </div>
+                <div className="h-20 flex items-center justify-center px-6 border-b border-slate-100">
+                    <Link href={'/'} className="flex items-center  gap-3">
+                         <Image src={logo} alt='logo'  height={40} width={70}/>
+                    </Link>
                 </div>
                 <div className="px-4 py-6 border-b border-slate-100 flex items-center gap-3.5 bg-slate-50/50">
                     <Avatar size="xxl" className="relative overflow-hidden">

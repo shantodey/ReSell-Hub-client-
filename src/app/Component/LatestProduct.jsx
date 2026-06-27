@@ -22,7 +22,7 @@ function ProductCard({ product }) {
     };
 
     return (
-        <div className="group relative bg-white border border-slate-100 rounded-2xl overflow-hidden hover:border-slate-300 hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] transition-all duration-300 flex flex-col justify-between h-full">
+        <div className="group relative bg-white border border-gray-300 rounded-2xl overflow-hidden hover:border-slate-300 hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] transition-all duration-300 flex flex-col justify-between h-full">
       
             <div className="relative aspect-[4/3] w-full bg-slate-50 overflow-hidden">
                 <div className="absolute top-3 left-3 z-10 flex flex-col gap-1.5 items-start">
