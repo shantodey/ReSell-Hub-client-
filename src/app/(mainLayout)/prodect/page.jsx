@@ -49,19 +49,13 @@ const AllProductsPage = async ({ searchParams }) => {
                 </form>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                    {mockProducts && mockProducts.length > 0 ? (
-                        (() => {
-                            // .trim() এবং .toLowerCase() যোগ করা হয়েছে যেন কোনো স্ট্রিং মিসম্যাচ না হয়
+                    {mockProducts && mockProducts.length > 0 ? ((() => {
                             const approvedProducts = mockProducts.filter(
                                 product => product.status?.trim().toLowerCase() === "approved"
                             );
-
-                            // ফিল্টার করার পর যদি কোনো অ্যাপ্রুভড প্রোডাক্ট না থাকে
                             if (approvedProducts.length === 0) {
                                 return <p className="text-slate-500 col-span-full text-center py-12">No approved products found!</p>;
                             }
-
-                            // শুধুমাত্র অ্যাপ্রুভড প্রোডাক্টগুলোই স্ক্রিনে রেন্ডার হবে
                             return approvedProducts.map((product) => (
                                 <ProductCard key={product._id} product={product} />
                             ));

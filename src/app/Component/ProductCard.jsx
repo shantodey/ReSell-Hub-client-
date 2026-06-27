@@ -4,14 +4,13 @@ import React from "react";
 import { Card, Button, Avatar } from "@heroui/react";
 import { FaStar } from "react-icons/fa";
 import Image from "next/image";
-import { authClient } from "@/lib/auth-client";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+
 
 export default function ProductCard({ product }) {
-    const { title, category, condition, price, images ,_id } = product;
-    const { data: session, isPending } = authClient.useSession();
-    const { name, image } = session?.user || {};
+    const { title, category, condition, price, images ,_id ,sellerInfo } = product;
+
+    
     return (
         <Card className="w-full bg-white border border-slate-200 rounded-2xl p-0 shadow-none hover:shadow-lg transition-shadow">
 
@@ -30,12 +29,11 @@ export default function ProductCard({ product }) {
                 <div className="flex items-center justify-between border-t pt-3 mt-2">
                     <div className="flex items-center gap-2">
                         <Avatar size="xxl" className="relative overflow-hidden">
-                            {isPending ? (<div className="size-full animate-pulse bg-slate-200" />) : image ? (
-                                <Image src={image} alt={name || "User Avatar"} fill sizes="80px" className="rounded-full object-cover" />
-                            ) :
-                                (<Avatar.Fallback>{name?.charAt(0).toUpperCase()}</Avatar.Fallback>)}
+                            <Image src={sellerInfo.sellerimg} alt={sellerInfo.name || "User Avatar"} fill sizes="80px" className="rounded-full object-cover" />
+                            <Avatar.Fallback>{sellerInfo.name?.charAt(0).toUpperCase()}</Avatar.Fallback>
+                           
                         </Avatar>
-                        <span className="text-xs font-bold text-slate-600 capitalize">{name}</span>
+                        <span className="text-xs font-bold text-slate-600 capitalize">{sellerInfo.name}</span>
                     </div>
                     <div className="flex items-center gap-1">
                         <FaStar className="text-amber-400 w-3 h-3" />

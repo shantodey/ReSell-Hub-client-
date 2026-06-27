@@ -21,8 +21,8 @@ const ADDProductPage = () => {
 
     // user data
     const { data: session } = authClient.useSession();
-    const { name, email, _id } = session?.user || {};
-    const sellerInfo = { userId: _id, name: name,  email: email, phone: "+8801812345678"};
+    const { name,image, email, _id } = session?.user || {};
+    const sellerInfo = { userId: _id, name: name, sellerimg:image, email: email, phone: "+8801812345678"};
 
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
 
