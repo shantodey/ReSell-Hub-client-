@@ -1,3 +1,4 @@
+"use server"
 export const prodectData = async (filters = {}) => {
     const { search = "", category = "", sort = "" } = filters;
     const queryParams = new URLSearchParams({ search, category, sort }).toString();
@@ -8,20 +9,20 @@ export const prodectData = async (filters = {}) => {
             headers: {
                 "Content-Type": "application/json",
             },
-            cache: "no-store" 
+            cache: "no-store"
         });
-        
+
         if (!res.ok) throw new Error("Failed to fetch data from server");
-        
+
         const data = await res.json();
         return data;
     } catch (error) {
         console.error("Fetch Error:", error);
-        return []; 
+        return [];
     }
 };
 
-export const getSingleProduct=async(id)=> {
+export const getSingleProduct = async (id) => {
     try {
         const res = await fetch(`${process.env.SERVER_URL}/app/product/${id}`, {
             cache: "no-store",
@@ -32,4 +33,37 @@ export const getSingleProduct=async(id)=> {
         console.error("Error fetching single product:", error);
         return null;
     }
+}
+
+export const cheackOutData = async (session, sellerInfo, productId, orderQuantity, totalPrice) => {
+    const req = await fetch(`${process.env.SERVER_URL}/app/orders`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", },
+        body: JSON.stringify({
+            buyerInfo: {
+                userId: session.user.id || session.user._id,
+                name: session.user.name,
+                email: session.user.email,
+            },
+            sellerInfo: {
+                userId: sellerInfo?.userId || "seller_id_here",
+                name: sellerInfo?.name,
+                email: sellerInfo?.email || "",
+            },
+            productId: productId,
+            quantity: orderQuantity,
+            totalPrice: totalPrice,
+            paymentStatus: "unpaid",
+            orderStatus: "processing"
+        }),
+    });
+
+    const res = await req.json();
+    return { ...res, ok: req.ok };
+}
+
+export const cheackOutProdectData = async (session) => {
+    const req = await fetch(`${process.env.SERVER_URL}/app/orders?email=${session.user.email}`);
+     const res = await req.json();
+     return res
 }

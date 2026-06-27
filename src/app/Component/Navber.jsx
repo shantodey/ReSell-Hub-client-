@@ -9,6 +9,7 @@ import Link from "next/link";
 import { authClient } from "@/lib/auth-client";
 import Image from "next/image";
 import logo from '../../assets/logo.png'
+import { RiShoppingCartLine } from "react-icons/ri";
 const Navber = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const { data: session, isPending } = authClient.useSession();
@@ -36,6 +37,8 @@ const Navber = () => {
                     <li>{isPending ? (<span>Dashboard</span>) : (<Link href={`/dashboard/${role}`}>Dashboard</Link>)}</li>
                 </ul>
                 {session?.user ? (
+                    <div className=" flex gap-5 items-center">
+                    <li className="list-item"><Link href={'/cheackOut'}><RiShoppingCartLine className="size-5"/></Link></li>
                     <Dropdown>
                         <Dropdown.Trigger className="rounded-full">
                             <Avatar>
@@ -81,6 +84,7 @@ const Navber = () => {
                             </Dropdown.Menu>
                         </Dropdown.Popover>
                     </Dropdown>
+                    </div>
                 ) : <ul>
                     <li className="bg-blue-500 text-white px-2">
                         <Link href={'/login'}>Login</Link>
