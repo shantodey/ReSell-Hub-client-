@@ -47,13 +47,7 @@ const HeroSectionPage = () => {
             <motion.div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center w-full" initial="hidden" animate="visible"  variants={containerVariants} >
                 <div className="lg:col-span-5 flex flex-col space-y-6 z-10">
 
-                    {/* Sustainable Badge */}
-                    <motion.div variants={fadeInUp} className="flex">
-                        <div className="inline-flex items-center gap-2 bg-emerald-50/80 text-emerald-700 px-3 py-1.5 rounded-full text-xs font-semibold border border-emerald-200/60 shadow-sm">
-                            <IoLeafOutline className="text-sm text-emerald-600 animate-pulse" />
-                            <span>Sustainable Marketplace</span>
-                        </div>
-                    </motion.div>
+                   
 
                     <motion.h1 variants={fadeInUp} className="text-4xl md:text-5xl lg:text-6xl font-black text-slate-950 tracking-tight leading-[1.15]" >
                         Buy & Sell Quality <br />

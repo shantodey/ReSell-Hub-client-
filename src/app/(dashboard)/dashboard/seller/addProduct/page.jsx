@@ -37,8 +37,6 @@ const ADDProductPage = () => {
             if (!IMGBB_API_KEY) {
                 throw new Error("Image upload API key is missing.");
             }
-
-            // একসাথে মাল্টিপল ইমেজ আপলোড প্রসেস করার জন্য
             for (let i = 0; i < files.length; i++) {
                 const file = files[i];
 
