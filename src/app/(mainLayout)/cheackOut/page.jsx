@@ -4,30 +4,34 @@ import { useEffect, useState } from "react";
 import { authClient } from "@/lib/auth-client";
 import { Button } from "@heroui/react";
 import { toast } from "react-hot-toast";
-import { FaShoppingBag, FaUserLock, FaCheckCircle, FaClock, FaBoxOpen, FaUser, FaEnvelope, FaCreditCard, FaReceipt } from "react-icons/fa";
+import { FaShoppingBag, FaCheckCircle, FaClock, FaBoxOpen, FaUser, FaEnvelope, FaCreditCard, FaReceipt, FaSpinner } from "react-icons/fa";
 import { cheackOutProdectData } from "@/lib/api/prodectData";
+import Link from "next/link";
 
 export default function CheckoutPage() {
     const { data: session, isPending: sessionPending } = authClient.useSession();
     const [orders, setOrders] = useState([]);
     const [loadingOrders, setLoadingOrders] = useState(true);
+    const [isProcessing, setIsProcessing] = useState(false);
 
     useEffect(() => {
         if (!sessionPending && !session?.user?.email) {
-            const timer = setTimeout(() => {
-                setLoadingOrders(false);
-            }, 0);
-            return () => clearTimeout(timer);
+            setLoadingOrders(false);
+            return;
         }
 
         if (session?.user?.email) {
             const fetchOrders = async () => {
                 try {
                     const data = await cheackOutProdectData(session);
-                    setOrders(data.orders);
+                    const unpaidOrders = (data.orders || []).filter(
+                        (order) => order.paymentStatus === "unpaid"
+                    );
+                    
+                    setOrders(unpaidOrders);
                 } catch (error) {
                     console.error("Error loading orders:", error);
-                    toast.error("Network error! Couldn't reach server.", { id: fetchToast });
+                    toast.error("Network error! Couldn't reach server.");
                 } finally {
                     setLoadingOrders(false);
                 }
@@ -37,15 +41,57 @@ export default function CheckoutPage() {
         }
     }, [session, sessionPending]);
 
-    const handleConfirmOrder = () => {
-        toast.success("Order confirmed successfully! Thanks for shopping.");
-    };
-
     const grandTotal = orders.reduce((sum, order) => sum + (order.totalPrice || 0), 0);
+
+    const handleConfirmOrder = async () => {
+        if (orders.length === 0) {
+            toast.error("Your cart is empty!");
+            return;
+        }
+
+        setIsProcessing(true);
+        const fetchToast = toast.loading("Preparing checkout...");
+
+        try {
+            const response = await fetch('/api/checkout_sessions', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    amount: grandTotal,
+                    email: session?.user?.email,
+                }),
+            });
+
+            const data = await response.json();
+
+            if (data.url) {
+                toast.success("Redirecting to secure gateway...", { id: fetchToast });
+                window.location.href = data.url;
+            } else {
+                toast.error(data.error || "Something went wrong!", { id: fetchToast });
+                setIsProcessing(false);
+            }
+        } catch (error) {
+            console.error("Checkout error:", error);
+            toast.error("Failed to initiate payment.", { id: fetchToast });
+            setIsProcessing(false);
+        }
+    };
+    if (sessionPending || loadingOrders) {
+        return (
+            <div className="min-h-screen bg-slate-50/60 flex flex-col items-center justify-center gap-3">
+                <FaSpinner className="text-blue-600 text-4xl animate-spin" />
+                <p className="text-slate-500 font-medium text-sm">Syncing checkout details...</p>
+            </div>
+        );
+    }
 
     return (
         <div className="min-h-screen bg-slate-50/60 py-8 px-4 sm:px-6 lg:px-8">
             <div className="max-w-6xl mx-auto">
+                {/* Header Section */}
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 border-b border-slate-200/60 pb-6">
                     <div className="flex items-center gap-4">
                         <div className="w-12 h-12 bg-blue-600 text-white rounded-2xl flex items-center justify-center shadow-lg shadow-blue-100">
@@ -57,19 +103,22 @@ export default function CheckoutPage() {
                         </div>
                     </div>
                 </div>
-
                 {orders.length === 0 ? (
-
                     <div className="text-center py-16 bg-white border border-slate-200 rounded-3xl shadow-sm max-w-xl mx-auto px-4">
-                        <div className="w-16 h-16 bg-slate-50 border border-slate-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                            <FaBoxOpen className="text-slate-400 text-3xl" />
+                        <div className="w-16 h-16 bg-green-50 border border-green-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                            <FaBoxOpen className="text-green-500 text-3xl" />
                         </div>
-                        <h3 className="text-lg font-bold text-slate-800 mb-1">Your cart is empty</h3>
-                        <p className="text-slate-500 text-sm mb-6">Looks like you havent added or processed any products to checkout yet.</p>
-                        <Button className="bg-slate-900 text-white font-bold rounded-xl h-11 px-6">Explore Products</Button>
+                        <h3 className="text-lg font-bold text-slate-800 mb-1">No pending orders</h3>
+                        <p className="text-slate-500 text-sm mb-6">
+                            All your active orders are successfully paid or your cart is currently empty.
+                        </p>
+                        <Link href="/">
+                            <Button className="bg-blue-600 text-white font-bold rounded-xl h-11 px-6 hover:bg-blue-700 transition-colors">
+                                Continue Shopping
+                            </Button>
+                        </Link>
                     </div>
                 ) : (
-
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
                         <div className="lg:col-span-2 space-y-6">
                             <div className="hidden sm:block bg-white border border-slate-200/80 rounded-2xl overflow-hidden shadow-sm shadow-slate-100">
@@ -122,6 +171,7 @@ export default function CheckoutPage() {
                                 </div>
                             </div>
 
+                            {/* Mobile Card View */}
                             <div className="block sm:hidden space-y-4">
                                 <p className="text-xs font-bold uppercase text-slate-400 px-1">Items in Checkout ({orders.length})</p>
                                 {orders.map((order) => (
@@ -151,8 +201,6 @@ export default function CheckoutPage() {
                                 ))}
                             </div>
                         </div>
-
-
                         <div className="space-y-6">
                             <div className="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm shadow-slate-100/60 sticky top-6">
                                 <div className="flex items-center gap-2 mb-5 pb-3 border-b border-slate-100">
@@ -163,11 +211,11 @@ export default function CheckoutPage() {
                                 <div className="bg-slate-50 border border-slate-100 p-4 rounded-2xl space-y-3 mb-6">
                                     <div className="flex items-center gap-3 text-slate-700">
                                         <FaUser className="text-slate-400 text-sm shrink-0" />
-                                        <span className="text-sm font-semibold truncate">{session.user.name}</span>
+                                        <span className="text-sm font-semibold truncate">{session?.user?.name}</span>
                                     </div>
                                     <div className="flex items-center gap-3 text-slate-700">
                                         <FaEnvelope className="text-slate-400 text-sm shrink-0" />
-                                        <span className="text-xs font-medium truncate text-slate-500">{session.user.email}</span>
+                                        <span className="text-xs font-medium truncate text-slate-500">{session?.user?.email}</span>
                                     </div>
                                     <div className="flex items-center gap-3 pt-1 border-t border-slate-200/60 text-slate-700">
                                         <FaCreditCard className="text-slate-400 text-sm shrink-0" />
@@ -193,13 +241,16 @@ export default function CheckoutPage() {
                                     </div>
                                 </div>
 
-                                <Button fullWidth onClick={handleConfirmOrder}
-                                    className="bg-blue-600 hover:bg-blue-700 text-white font-bold h-12 rounded-xl shadow-lg shadow-blue-100 transition-all hover:-translate-y-0.5 active:translate-y-0 text-sm" >
-                                    Confirm Order Details
+                                <Button
+                                    fullWidth
+                                    onClick={handleConfirmOrder}
+                                    disabled={isProcessing || loadingOrders}
+                                    className="bg-blue-600 hover:bg-blue-700 text-white font-bold h-12 rounded-xl shadow-lg shadow-blue-100 transition-all hover:-translate-y-0.5 active:translate-y-0 text-sm disabled:bg-slate-300"
+                                >
+                                    {isProcessing ? "Processing..." : "Confirm Order Details"}
                                 </Button>
                             </div>
                         </div>
-
                     </div>
                 )}
             </div>

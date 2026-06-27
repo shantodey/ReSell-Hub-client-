@@ -67,3 +67,17 @@ export const cheackOutProdectData = async (session) => {
      const res = await req.json();
      return res
 }
+
+
+// for stripe 
+export const createCheckoutSession = async (amount, email) => {
+    const response = await fetch('/api/checkout_sessions', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ amount, email }),
+    });
+    
+    return await response.json();
+};
