@@ -14,8 +14,14 @@ export const auth = betterAuth({
     },
     user: {
         additionalFields: {
-            role: {defaultValue:"seller"},
+            role: {defaultValue:"buyer"},
             isBlocked:{defaultValue:false},
         }
-    }
+    },
+    socialProviders: {
+        google: { 
+            clientId: process.env.GOOGLE_CLIENT_ID, 
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET, 
+        }, 
+    },
 });

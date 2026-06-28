@@ -5,6 +5,7 @@ import { Form, TextField, InputGroup, Label, FieldError, Button } from "@heroui/
 import { FiMail, FiLock, FiEye, FiEyeOff, FiArrowRight } from "react-icons/fi";
 import { FcGoogle } from "react-icons/fc";
 import { authClient } from "@/lib/auth-client";
+import { createAuthClient } from "better-auth/client";
 
 const LoginPage = () => {
     const [showPassword, setShowPassword] = useState(false);
@@ -12,16 +13,16 @@ const LoginPage = () => {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isGoogleLoading, setIsGoogleLoading] = useState(false);
 
-    const handleSubmit=async(e)=> {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         setFormError("");
         const formData = new FormData(e.currentTarget);
         setIsSubmitting(true);
         try {
             const { data, error } = await authClient.signIn.email({
-              email:formData.get("email")?.toString().trim(),
-              password:formData.get("password")?.toString(),
-              callbackURL: "/",
+                email: formData.get("email")?.toString().trim(),
+                password: formData.get("password")?.toString(),
+                callbackURL: "/",
             });
             if (error) throw new Error(error.message || "Invalid email or password.");
             console.log("Login payload:", { email, password });
@@ -35,9 +36,13 @@ const LoginPage = () => {
     async function handleGoogleLogin() {
         setFormError("");
         setIsGoogleLoading(true);
+        const authClient = createAuthClient();
         try {
-            // TODO: replace with your real Better Auth call once it's configured:
-            // await authClient.signIn.social({ provider: "google", callbackURL: "/dashboard" });
+            const data = await authClient.signIn.social({
+                provider: "google",
+            });
+            const signIn = async () => {
+            };
             console.log("TODO: Google sign-in via Better Auth");
         } catch (err) {
             setFormError(err.message || "Google sign-in failed.");
@@ -109,7 +114,7 @@ const LoginPage = () => {
                         variant="outline"
                         fullWidth
                         isPending={isGoogleLoading}
-                        onPress={handleGoogleLogin}
+                        onClick={handleGoogleLogin}
                         className="gap-2"
                     >
                         <FcGoogle className="size-4" />

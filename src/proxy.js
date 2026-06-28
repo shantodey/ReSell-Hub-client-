@@ -17,5 +17,15 @@ export async function proxy(request) {
 
 
 export const config = {
-    matcher: ['/dashboard','/cheackOut',]
+    matcher: [
+        '/dashboard',
+        '/cheackOut',
+        '/dashboard/:role',
+        '/dashboard/:role/addProduct',
+        '/dashboard/:role/myProducts',
+        '/dashboard/:role/my-orders',
+        '/dashboard/:role/wishlist',
+        '/dashboard/:role/manage-users',
+        '/dashboard/:role/profile',
+    ]
 }

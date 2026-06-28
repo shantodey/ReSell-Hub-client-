@@ -3,6 +3,7 @@
 import { updateProfile } from "@/lib/api/userUpdateApi";
 import { authClient } from "@/lib/auth-client";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useState, useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -14,7 +15,6 @@ const MAX_FILE_BYTES = 5 * 1024 * 1024; // 5MB
 export default function ProfileUpdatePage() {
     const { data: session, isPending } = authClient.useSession();
     const user = session?.user || {};
-
     const fileInputRef = useRef(null);
     const [photoUrl, setPhotoUrl] = useState(null);
     const [photoPreview, setPhotoPreview] = useState(user?.image || "");
@@ -22,12 +22,8 @@ export default function ProfileUpdatePage() {
     const [formError, setFormError] = useState("");
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [successMessage, setSuccessMessage] = useState("");
-
-    const { register, handleSubmit, setValue } = useForm({
-        defaultValues: {
-            name: user?.name || ""
-        }
-    });
+    const router = useRouter();
+    const { register, handleSubmit, setValue } = useForm({ defaultValues: { name: user?.name || "" }});
 
     useEffect(() => {
     if (user) {
@@ -94,9 +90,10 @@ export default function ProfileUpdatePage() {
             image: photoUrl || user.image,
         };
 
-        try {
+         try {
             const result = await updateProfile(payload);
             toast.success(result.message);
+            router.refresh();
         } catch (err) {
              toast.error(err.message || "Something went wrong!");
         } finally {

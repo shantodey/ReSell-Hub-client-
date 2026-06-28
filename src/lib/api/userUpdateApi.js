@@ -1,7 +1,7 @@
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
+"use server"
 
 export const updateProfile = async (payload) => {
-    const response = await fetch(`${BASE_URL}/app/user`, {
+    const response = await fetch(`${process.env.SERVER_URL}/app/user`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),

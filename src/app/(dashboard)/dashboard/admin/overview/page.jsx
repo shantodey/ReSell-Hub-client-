@@ -1,12 +1,12 @@
 import AdminOverView from '@/app/Component/Dashboard/AdminOverView';
 import React from 'react';
 
-
-const AdminPage = () => {
-
+const page = () => {
     return (
-    <AdminOverView/>
+        <div>
+            <AdminOverView/>
+        </div>
     );
 };
 
-export default AdminPage;
+export default page;

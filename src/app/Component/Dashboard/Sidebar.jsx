@@ -28,7 +28,7 @@ const Sidebar = () => {
     ];
 
     const adminMenuItems = [
-        { id: 'Overview', label: 'Overview', icon: <FiGrid className="text-lg" />, path: '/dashboard/admin' },
+        { id: 'Overview', label: 'Overview', icon: <FiGrid className="text-lg" />, path: '/dashboard/overview' },
         { id: 'Manage Users', label: 'Manage Users', icon: <FiUsers className="text-lg" />, path: '/dashboard/admin/manage-users' },
         { id: 'Manage Products', label: 'Manage Products', icon: <FiLayers className="text-lg" />, path: '/dashboard/admin/manage-products' },
         { id: 'Manage Orders', label: 'Manage Orders', icon: <FiShoppingBag className="text-lg" />, path: '/dashboard/admin/manage-orders' },

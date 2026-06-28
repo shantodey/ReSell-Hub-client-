@@ -100,22 +100,25 @@ export default function SignupPage() {
         }
     };
 
-    if (isDone) {
-        return (
-            <main className="flex min-h-screen items-center justify-center bg-background px-6">
-                <div className="flex w-full max-w-md flex-col items-center gap-3 rounded-2xl border border-border px-8 py-12 text-center">
-                    <span className="flex size-12 items-center justify-center rounded-full bg-accent/10 text-accent">
-                        <FiCheck className="size-6" />
-                    </span>
-                    <h2 className="text-2xl font-light text-foreground">You&apos;re in.</h2>
-                    <p className="max-w-xs text-sm text-muted">
-                        Your account has been created. Check your email for next steps.
-                    </p>
-                </div>
-            </main>
-        );
-    }
-
+   if (isDone) {
+    return (
+        <main className="flex min-h-screen items-center justify-center bg-background px-6">
+            <meta httpEquiv="refresh" content="4;url=/" />
+            <div className="flex w-full max-w-md flex-col items-center gap-3 rounded-2xl border border-border px-8 py-12 text-center">
+                <span className="flex size-12 items-center justify-center rounded-full bg-accent/10 text-accent">
+                    <FiCheck className="size-6" />
+                </span>
+                <h2 className="text-2xl font-light text-foreground">You&apos;re in.</h2>
+                <p className="max-w-xs text-sm text-muted">
+                    Your account has been created. Check your email for next steps.
+                </p>
+                <p className="text-xs text-gray-400 mt-2">
+                    Redirecting to homepage in 4 seconds...
+                </p>
+            </div>
+        </main>
+    );
+}
     return (
         <main className="flex min-h-screen items-center justify-center bg-background px-6 py-16">
             <div className="flex w-full max-w-md flex-col gap-8">
