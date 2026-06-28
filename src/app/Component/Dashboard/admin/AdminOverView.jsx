@@ -5,9 +5,8 @@ import React from 'react';
 
 async function getOverviewData() {
     try {
-        // আপনার ব্যাকএন্ড পোর্ট বা ইউআরএল অনুযায়ী পরিবর্তন করে নিতে পারেন
         const res = await fetch(`${process.env.SERVER_URL}/app/admin/overview`, {
-            next: { revalidate: 10 } // প্রতি ১০ সেকেন্ড পর পর সার্ভার ব্যাকগ্রাউন্ডে ডেটা আপডেট করবে
+            next: { revalidate: 10 } 
         });
 
         if (!res.ok) {

@@ -1,11 +1,10 @@
 "use client";
 
 import React from 'react';
-import { Button } from '@heroui/react';
 import { motion } from "motion/react"
 import { FiArrowRight, FiTag, FiCheckCircle, FiUsers, FiBox, FiShoppingBag } from 'react-icons/fi';
-import { IoLeafOutline } from 'react-icons/io5';
 import Image from 'next/image';
+import Link from 'next/link';
 
 const containerVariants = {
     hidden: { opacity: 0 },
@@ -44,10 +43,8 @@ const HeroSectionPage = () => {
     ];
     return (
         <section className="relative w-full min-h-[650px] bg-gradient-to-br from-slate-50 via-white to-blue-50/20 overflow-hidden py-12 lg:py-20 px-4 md:px-8 max-w-7xl mx-auto flex items-center">
-            <motion.div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center w-full" initial="hidden" animate="visible"  variants={containerVariants} >
+            <motion.div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center w-full" initial="hidden" animate="visible" variants={containerVariants} >
                 <div className="lg:col-span-5 flex flex-col space-y-6 z-10">
-
-                   
 
                     <motion.h1 variants={fadeInUp} className="text-4xl md:text-5xl lg:text-6xl font-black text-slate-950 tracking-tight leading-[1.15]" >
                         Buy & Sell Quality <br />
@@ -55,26 +52,24 @@ const HeroSectionPage = () => {
                         With <span className="text-emerald-600 relative inline-block">Confidence</span>
                     </motion.h1>
 
-                    <motion.p variants={fadeInUp}  className="text-slate-600 text-base md:text-lg max-w-md font-medium leading-relaxed">
+                    <motion.p variants={fadeInUp} className="text-slate-600 text-base md:text-lg max-w-md font-medium leading-relaxed">
                         Join thousands of smart buyers and trusted sellers in our community marketplace.
                     </motion.p>
 
                     {/* Call to Actions (Hero UI Components) */}
                     <motion.div variants={fadeInUp} className="flex flex-wrap gap-4 pt-2">
-                        <Button variant="primary" size="lg" className="bg-blue-600 text-white font-bold shadow-md hover:bg-blue-700 transition-all rounded-xl px-6 py-3.5"
-                            onPress={() => console.log('Navigate to Products')} >
-                            Explore Products <FiArrowRight className="ml-1 text-lg" />
-                        </Button>
 
-                        <Button variant="outline" size="lg"
-                            className="border-2 border-slate-200 text-blue-600 font-bold hover:bg-slate-50 hover:border-slate-300 transition-all rounded-xl px-6 py-3.5 bg-white shadow-sm"
-                            onPress={() => console.log('Navigate to Selling Flow')} >
+                        <Link href="/prodect" className="bg-blue-600 text-white font-bold flex items-center shadow-md hover:bg-blue-700 transition-all rounded-xl px-6 py-3.5">
+                            Explore Products <FiArrowRight className="ml-1 text-lg" />
+                        </Link>
+                        <Link href="/dashboard/seller/addProduct"  className="border-2 border-slate-200 text-blue-600 font-bold flex items-center hover:bg-slate-50 hover:border-slate-300 transition-all rounded-xl px-6 py-3.5 bg-white shadow-sm">
                             <FiTag className="mr-1 text-lg" /> Start Selling
-                        </Button>
+                        </Link>
+
                     </motion.div>
 
-                    {/* Stats Grid */}
-                    <motion.div variants={fadeInUp}  className="grid grid-cols-2 gap-3.5 pt-6 border-t border-slate-100" >
+
+                    <motion.div variants={fadeInUp} className="grid grid-cols-2 gap-3.5 pt-6 border-t border-slate-100" >
                         {stats.map((stat) => (
                             <div key={stat.id}
                                 className="flex items-center gap-3 bg-white/60 backdrop-blur-md p-3.5 rounded-2xl border border-slate-100/80 shadow-sm hover:shadow-md transition-all duration-300">
@@ -148,7 +143,7 @@ const HeroSectionPage = () => {
 
                         {/* Controller */}
                         <div className="absolute w-[95px] md:w-[125px] h-[95px] md:h-[125px] translate-x-44 translate-y-16 z-20 rotate-12">
-                            <Image src="https://images.unsplash.com/photo-1600080972464-8e5f3580211a?w=200" alt="Controller" fill className="object-contain drop-shadow-2xl" sizes="(max-width: 768px) 95px, 125px" />
+                            <Image src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQjuGGHQF5hDRefuT_S33yTMWUJRLt2or9EsuEHSTL2vA&s=10" alt="Controller" fill className="object-contain drop-shadow-2xl" sizes="(max-width: 768px) 95px, 125px" />
                         </div>
 
                         {/* Plant */}

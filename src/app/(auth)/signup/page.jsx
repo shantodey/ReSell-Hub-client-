@@ -119,128 +119,136 @@ export default function SignupPage() {
         </main>
     );
 }
-    return (
-        <main className="flex min-h-screen items-center justify-center bg-background px-6 py-16">
-            <div className="flex w-full max-w-md flex-col gap-8">
-                <div className="flex flex-col gap-2">
-                    <h1 className="text-3xl font-light text-foreground">Create your account</h1>
-                    <p className="text-sm text-muted">Join as a buyer or a seller — it takes less than a minute.</p>
+   return (
+    <main className="min-h-screen bg-background flex items-center justify-center px-4 py-8 sm:px-6 lg:px-8">
+        <div className="w-full max-w-md">
+            <div className="rounded-3xl border border-border/60 bg-content1 shadow-xl backdrop-blur-sm p-6 sm:p-8">
+                <div className="mb-8 text-center">
+                    <h1 className="text-3xl sm:text-4xl font-semibold tracking-tight text-foreground">  Create Account </h1>
+                    <p className="mt-2 text-sm text-muted"> Join as a buyer or seller in less than a minute.</p>
                 </div>
 
-                <Form className="flex w-full flex-col gap-6" onSubmit={handleSubmit(onSubmit)}>
-                    {/* Photo */}
-                    <div className="flex items-center gap-4">
-                        <div className="relative">
-                            <Avatar size="lg" className="size-20 border border-border">
-                                {photoPreview ? <Avatar.Image src={photoPreview} alt="Profile preview" /> : null}
+                <Form className="flex w-full flex-col gap-5" onSubmit={handleSubmit(onSubmit)}>
+
+                    <div className="flex flex-col items-center gap-4 rounded-2xl border border-border bg-background/40 p-5 sm:flex-row">
+                        <div className="relative shrink-0">
+                            <Avatar size="lg" className="size-24 border-2 border-border" >
+                                {photoPreview ? (
+                                    <Avatar.Image src={photoPreview}  alt="Profile preview" />
+                                ) : null}
                                 <Avatar.Fallback>
-                                    <FiUser className="size-7 text-muted" />
+                                    <FiUser className="size-8 text-muted" />
                                 </Avatar.Fallback>
                             </Avatar>
 
-                            {isUploading ? (
+                            {isUploading && (
                                 <div className="absolute inset-0 flex items-center justify-center rounded-full bg-black/40">
                                     <Spinner size="sm" className="text-white" />
                                 </div>
-                            ) : null}
+                            )}
 
-                            <button
-                                type="button"
-                                onClick={() => fileInputRef.current?.click()}
-                                aria-label="Upload profile photo"
-                                className="absolute -bottom-1 -right-1 flex size-7 items-center justify-center rounded-full border border-border bg-surface text-foreground shadow-sm transition hover:border-accent hover:bg-accent hover:text-accent-foreground"
+                            <button type="button" onClick={() =>  fileInputRef.current?.click() } aria-label="Upload profile photo"
+                                className="absolute -bottom-1 -right-1 flex h-8 w-8 items-center justify-center rounded-full border border-border bg-content1 shadow-md transition hover:bg-accent hover:text-accent-foreground"
                             >
-                                <FiCamera className="size-3.5" />
+                                <FiCamera className="size-4" />
                             </button>
-
-                            <input
-                                ref={fileInputRef}
-                                type="file"
-                                accept="image/*"
-                                className="hidden"
-                                onChange={handlePhotoChange}
-                            />
+                            <input  ref={fileInputRef} type="file" accept="image/*" className="hidden"onChange={handlePhotoChange} />
                         </div>
 
-                        <div className="flex flex-col gap-1">
-                            <p className="text-sm font-medium text-foreground">Profile photo</p>
-                            <button
-                                type="button"
-                                onClick={() => fileInputRef.current?.click()}
-                                className="text-left text-sm text-accent underline-offset-2 hover:underline"
-                            >
-                                {photoUrl ? "Change photo" : "Upload a photo"}
+                        <div className="text-center sm:text-left">
+                            <h3 className="font-medium text-foreground">  Profile Photo </h3>
+
+                            <button type="button" onClick={() => fileInputRef.current?.click()} className="mt-1 text-sm font-medium text-accent hover:underline">
+                                {photoUrl? "Change photo" : "Upload a photo"}
                             </button>
+
                             {photoError ? (
-                                <span className="flex items-center gap-1 text-xs text-danger">
+                                <p className="mt-2 flex items-center justify-center gap-1 text-xs text-danger sm:justify-start">
                                     <FiAlertCircle className="size-3.5" />
                                     {photoError}
-                                </span>
+                                </p>
                             ) : (
-                                <span className="text-xs text-muted">PNG or JPG, up to 5MB.</span>
+                                <p className="mt-2 text-xs text-muted">
+                                    PNG or JPG • Maximum 5MB
+                                </p>
                             )}
                         </div>
                     </div>
 
-                    {/* Name */}
-                    <TextField isRequired name="fullName" minLength={2} fullWidth>
-                        <Label className="text-sm font-medium text-foreground">Full name</Label>
-                        <InputGroup fullWidth className="mt-1.5">
-                            <InputGroup.Prefix>
+                    {/* Full Name */}
+                    <TextField  isRequired  name="fullName"  minLength={2} fullWidth  >
+                        <Label className="mb-2 text-sm font-medium">   Full Name </Label>
+                        <InputGroup fullWidth className="rounded-xl border border-border overflow-hidden" >
+                            <InputGroup.Prefix className="px-3">
                                 <FiUser className="size-4 text-muted" />
                             </InputGroup.Prefix>
-                            <InputGroup.Input {...register("name", { required: " Your name is required" })} placeholder="Jordan Rivera" />
+
+                            <InputGroup.Input {...register("name", {   required: " Your name is required", })} placeholder="Jordan Rivera" className="py-3"/>
                         </InputGroup>
-                        <FieldError className="mt-1 text-xs text-danger">Enter your full name.</FieldError>
+
+                        <FieldError className="mt-1 text-xs text-danger"> Enter your full name.</FieldError>
                     </TextField>
 
                     {/* Email */}
                     <TextField isRequired type="email" name="email" fullWidth>
-                        <Label className="text-sm font-medium text-foreground">Email address</Label>
-                        <InputGroup fullWidth className="mt-1.5">
-                            <InputGroup.Prefix>
+                        <Label className="mb-2 text-sm font-medium">  Email Address</Label>
+                        <InputGroup fullWidth  className="rounded-xl border border-border overflow-hidden" >
+                            <InputGroup.Prefix className="px-3">
                                 <FiMail className="size-4 text-muted" />
                             </InputGroup.Prefix>
-                            <InputGroup.Input {...register("email", { required: " Enter your email address" })} />
+                            <InputGroup.Input {...register("email", {  required:  " Enter your email address", })}className="py-3"/>
                         </InputGroup>
-                        <FieldError className="mt-1 text-xs text-danger">Enter a valid email address.</FieldError>
-                    </TextField>
-                    {/* Passwrod */}
-                    <TextField isRequired type="password" name="password" fullWidth>
-                        <Label className="text-sm font-medium text-foreground">Password</Label>
-                        <InputGroup fullWidth className="mt-1.5">
-                            <InputGroup.Prefix>
-                                <FiMail className="size-4 text-muted" />
-                            </InputGroup.Prefix>
-                            <InputGroup.Input {...register("password", { required: " password name is required", mixLength: 12, minLength: 8 })} />
-                        </InputGroup>
-                        <FieldError className="mt-1 text-xs text-danger">Enter a valid email address.</FieldError>
+
+                        <FieldError className="mt-1 text-xs text-danger">
+                            Enter a valid email address.
+                        </FieldError>
                     </TextField>
 
-                    {/* Phone */}
-                    <TextField isRequired type="tel" name="phone" fullWidth>
-                        <Label className="text-sm font-medium text-foreground">Phone number</Label>
-                        <InputGroup fullWidth className="mt-1.5">
-                            <InputGroup.Prefix>
+                    {/* Password */}
+                    <TextField isRequired type="password" name="password" fullWidth >
+                        <Label className="mb-2 text-sm font-medium">  Password </Label>
+
+                        <InputGroup fullWidth className="rounded-xl border border-border overflow-hidden" >
+                            <InputGroup.Prefix className="px-3">
+                                <FiMail className="size-4 text-muted" />
+                            </InputGroup.Prefix>
+                            <InputGroup.Input {...register("password", { required: " password name is required", mixLength: 12, minLength: 8, })} className="py-3" />
+                        </InputGroup>
+
+                        <FieldError className="mt-1 text-xs text-danger">
+                            Password must be at least 8 characters.
+                        </FieldError>
+                    </TextField>
+                    <TextField isRequiredtype="tel" name="phone" fullWidth>
+                        <Label className="mb-2 text-sm font-medium"> Phone Number</Label>
+                        <InputGroup  fullWidth  className="rounded-xl border border-border overflow-hidden">
+                            <InputGroup.Prefix className="px-3">
                                 <FiPhone className="size-4 text-muted" />
                             </InputGroup.Prefix>
-                            <InputGroup.Input {...register("phone", { required: " phone name is required" })} />
+                            <InputGroup.Input {...register("phone", { required: " phone name is required", })} className="py-3"/>
                         </InputGroup>
-                        <FieldError className="mt-1 text-xs text-danger">Enter a valid phone number.</FieldError>
+
+                        <FieldError className="mt-1 text-xs text-danger">  Enter a valid phone number.</FieldError>
                     </TextField>
 
+                    <div className="space-y-2">
+                        <label className="text-sm font-medium text-foreground">
+                            Account Type
+                        </label>
 
-                    <select {...register("role", { required: "Role is required" })}>
-                        <option value="">Select user type</option>
-                        <option value="seller">Seller</option>
-                        <option value="buyer">Buyer</option>
-                    </select>
-                    <Button type="submit" fullWidth isPending={isSubmitting} className="gap-2">
-                        Create account
-                        <FiArrowRight className="size-4" />
-                    </Button>
+                        <select {...register("role", { required: "Role is required", })}
+                            className="h-12 w-full rounded-xl border border-border bg-background px-4 text-foreground outline-none transition focus:border-accent" >
+                            <option value=""> Select account type</option>
+                            <option value="seller">  Seller </option>
+                            <option value="buyer">  Buyer </option>
+                        </select>
+                    </div>
+
+                    {/* Submit */}
+                    <Button type="submit" fullWidth isPending={isSubmitting} className="h-12 rounded-xl gap-2 font-medium" >  Create Account <FiArrowRight className="size-4" /> </Button>
                 </Form>
             </div>
-        </main>
-    );
+        </div>
+    </main>
+);
 }

@@ -63,11 +63,23 @@ export const cheackOutData = async (session, sellerInfo, productId, orderQuantit
 }
 
 export const cheackOutProdectData = async (session) => {
-    const req = await fetch(`${process.env.SERVER_URL}/app/orders?email=${session.user.email}`);
-     const res = await req.json();
-     return res
-}
+    try {
+        if (!session?.user?.email) return { orders: [] };
+        const req = await fetch(`${process.env.SERVER_URL}/app/orders?email=${session.user.email}`, {
+            cache: 'no-store'
+        });
 
+        if (!req.ok) {
+            console.error(`Server error: ${req.status}`);
+            return { orders: [] };
+        }
+        const res = await req.json();
+        return res;
+    } catch (error) {
+        console.error("Fetch Error in cheackOutProdectData:", error);
+        return { orders: [] };
+    }
+}
 
 // for stripe 
 export const createCheckoutSession = async (amount, email) => {
@@ -78,6 +90,6 @@ export const createCheckoutSession = async (amount, email) => {
         },
         body: JSON.stringify({ amount, email }),
     });
-    
+
     return await response.json();
 };

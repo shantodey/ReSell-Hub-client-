@@ -1,4 +1,4 @@
-import AdminOverView from '@/app/Component/Dashboard/AdminOverView';
+import AdminOverView from '@/app/Component/Dashboard/admin/AdminOverView';
 import React from 'react';
 
 

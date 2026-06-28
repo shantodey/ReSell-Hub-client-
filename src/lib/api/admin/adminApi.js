@@ -9,15 +9,43 @@ export const adminUserSearch = async (search) => {
 
 
 export const adminUserDeleteBlock = async (payload, id, actionType) => {
-    // যদি এটি সার্ভার সাইড ফাইল হয়, তবে ক্লায়েন্ট থেকে কল করতে হলে 'use server' দিতে পারেন, অথবা এনভায়রনমেন্ট ভেরিয়েবল চেক করুন
     const response = await fetch(`${process.env.SERVER_URL}/app/admin/user-action/${id}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ action: actionType, ...payload })
     });
-
-    // এরর এড়াতে পুরো Response অবজেক্ট না পাঠিয়ে শুধু plain JSON ডাটা বা একটা ফ্ল্যাট অবজেক্ট পাঠান
     if (!response.ok) return { success: false };
     const data = await response.json();
     return { success: true, data };
+};
+
+
+export const fetchAdminProducts = async () => {
+    try {
+        const res = await fetch(`${process.env.SERVER_URL}/app/admin/products`, {
+            cache: 'no-store'
+        });
+        if (!res.ok) return [];
+        return await res.json();
+    } catch (error) {
+        console.error("Fetch products error:", error);
+        return [];
+    }
+};
+
+export const adminProductAction = async (id, actionType) => {
+    try {
+        const response = await fetch(`${process.env.SERVER_URL}/app/admin/product-action/${id}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: actionType })
+        });
+
+        if (!response.ok) return { success: false };
+        const data = await response.json();
+        return { success: true, data };
+    } catch (error) {
+        console.error("Product action error:", error);
+        return { success: false };
+    }
 };

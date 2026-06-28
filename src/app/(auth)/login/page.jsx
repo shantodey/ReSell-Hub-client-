@@ -6,6 +6,7 @@ import { FiMail, FiLock, FiEye, FiEyeOff, FiArrowRight } from "react-icons/fi";
 import { FcGoogle } from "react-icons/fc";
 import { authClient } from "@/lib/auth-client";
 import { createAuthClient } from "better-auth/client";
+import Link from "next/link";
 
 const LoginPage = () => {
     const [showPassword, setShowPassword] = useState(false);
@@ -50,87 +51,88 @@ const LoginPage = () => {
             setIsGoogleLoading(false);
         }
     }
-    return (
-        <main className="flex min-h-screen items-center justify-center bg-background ">
-            <div className="flex w-full max-w-md flex-col gap-8">
-                <div className="flex flex-col gap-2">
-                    <h1 className="text-3xl font-light text-foreground">Welcome back</h1>
-                    <p className="text-sm text-muted">Log in to your account to continue.</p>
+   return (
+    <main className="min-h-screen bg-background flex items-center justify-center px-4 py-8 sm:px-6 lg:px-8">
+        <div className="w-full max-w-md">
+            <div className="rounded-3xl border border-border/60 bg-content1 shadow-xl backdrop-blur-sm p-6 sm:p-8">
+                {/* Header */}
+                <div className="mb-8 text-center">
+                    <h1 className="text-3xl sm:text-4xl font-semibold tracking-tight text-foreground"> Welcome Back</h1>
+                    <p className="mt-2 text-sm text-muted"> Sign in to continue to your account. </p>
                 </div>
 
-                <Form className="flex w-full flex-col gap-6" onSubmit={handleSubmit}>
-                    <TextField isRequired type="email" name="email" fullWidth>
-                        <Label className="text-sm font-medium text-foreground">Email address</Label>
-                        <InputGroup fullWidth className="mt-1.5">
-                            <InputGroup.Prefix>
-                                <FiMail className="size-4 text-muted" />
+                <Form className="flex w-full flex-col gap-5"onSubmit={handleSubmit}>
+                    {/* Email */}
+                    <TextField  isRequired type="email" name="email" fullWidth >
+                        <Label className="mb-2 text-sm font-medium">  Email Address </Label>
+
+                        <InputGroup  fullWidth className="rounded-xl border border-border overflow-hidden">
+                            <InputGroup.Prefix className="px-3">
+                                <FiMail className="text-muted size-4" />
                             </InputGroup.Prefix>
-                            <InputGroup.Input placeholder="you@example.com" />
+                            <InputGroup.Input placeholder="you@example.com" className="py-3"/>
                         </InputGroup>
-                        <FieldError className="mt-1 text-xs text-danger">Enter a valid email address.</FieldError>
+
+                        <FieldError className="mt-1 text-xs text-danger">
+                            Enter a valid email address.
+                        </FieldError>
                     </TextField>
 
-                    <TextField isRequired name="password" minLength={6} fullWidth>
-                        <Label className="text-sm font-medium text-foreground">Password</Label>
-                        <InputGroup fullWidth className="mt-1.5">
-                            <InputGroup.Prefix>
-                                <FiLock className="size-4 text-muted" />
+                    {/* Password */}
+                    <TextField isRequired name="password" minLength={6} fullWidth >
+                        <Label className="mb-2 text-sm font-medium">  Password </Label>
+
+                        <InputGroup fullWidth className="rounded-xl border border-border overflow-hidden">
+                            <InputGroup.Prefix className="px-3">
+                                <FiLock className="text-muted size-4" />
                             </InputGroup.Prefix>
-                            <InputGroup.Input
-                                type={showPassword ? "text" : "password"}
-                                placeholder="Enter your password"
-                            />
-                            <InputGroup.Suffix>
-                                <button
-                                    type="button"
-                                    onClick={() => setShowPassword((v) => !v)}
-                                    aria-label={showPassword ? "Hide password" : "Show password"}
-                                    className="text-muted transition hover:text-foreground"
-                                >
-                                    {showPassword ? <FiEyeOff className="size-4" /> : <FiEye className="size-4" />}
+
+                            <InputGroup.Input type={showPassword ? "text" : "password"} placeholder="Enter your password" className="py-3"/>
+                            <InputGroup.Suffix className="px-3">
+                                <button type="button" onClick={() => setShowPassword((v) => !v) } aria-label={   showPassword ? "Hide password" : "Show password"}
+                                    className="text-muted hover:text-foreground transition-colors">
+                                    {showPassword ? ( <FiEyeOff className="size-4" />) : (  <FiEye className="size-4" /> )}
                                 </button>
                             </InputGroup.Suffix>
                         </InputGroup>
-                        <FieldError className="mt-1 text-xs text-danger">Enter your password.</FieldError>
+
+                        <FieldError className="mt-1 text-xs text-danger">
+                            Enter your password.
+                        </FieldError>
                     </TextField>
 
-                    {formError ? (
-                        <p className="rounded-xl bg-danger/10 px-4 py-2.5 text-sm text-danger">{formError}</p>
-                    ) : null}
-
-                    <Button type="submit" fullWidth isPending={isSubmitting} className="gap-2">
-                        Log in
+                   
+                    {formError && (
+                        <div className="rounded-xl border border-danger/20 bg-danger/10 px-4 py-3 text-sm text-danger"> {formError}</div>
+                    )}
+                   
+                    <Button type="submit" fullWidth isPending={isSubmitting}className="h-12 rounded-xl font-medium gap-2" >
+                        Log In
                         <FiArrowRight className="size-4" />
                     </Button>
 
-                    <div className="flex items-center gap-3">
-                        <span className="h-px flex-1 bg-border" />
-                        <span className="text-xs uppercase tracking-wide text-muted">or</span>
-                        <span className="h-px flex-1 bg-border" />
+                    <div className="flex items-center gap-4 py-1">
+                        <div className="h-px flex-1 bg-border" />
+                        <span className="text-xs uppercase tracking-[0.25em] text-muted">  OR</span>
+                        <div className="h-px flex-1 bg-border" />
                     </div>
-
-                    <Button
-                        type="button"
-                        variant="outline"
-                        fullWidth
-                        isPending={isGoogleLoading}
-                        onClick={handleGoogleLogin}
-                        className="gap-2"
-                    >
-                        <FcGoogle className="size-4" />
+                    
+                    <Button type="button" variant="outline" fullWidth isPending={isGoogleLoading} onClick={handleGoogleLogin}  className="h-12 rounded-xl gap-3 font-medium">
+                        <FcGoogle className="size-5" />
                         Continue with Google
                     </Button>
 
-                    <p className="text-center text-sm text-muted">
+                    <p className="pt-2 text-center text-sm text-muted">
                         Don&apos;t have an account?{" "}
-                        <a href="/signup" className="font-medium text-accent hover:underline">
+                        <Link href="/signup" className="font-semibold text-accent transition hover:underline">
                             Sign up
-                        </a>
+                        </Link>
                     </p>
                 </Form>
             </div>
-        </main>
-    );
+        </div>
+    </main>
+);
 };
 
 export default LoginPage;

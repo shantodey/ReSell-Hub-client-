@@ -2,14 +2,17 @@
 
 import React, { useState } from 'react';
 import { Avatar, Chip } from '@heroui/react';
-import { motion } from "motion/react"
-import { FiGrid, FiShoppingBag, FiHeart, FiCreditCard, FiUser, FiLogOut, FiChevronRight, FiPlusCircle, FiLayers, FiCheckSquare, FiPieChart, FiUsers, FiAlertTriangle } from 'react-icons/fi';
+import { motion, AnimatePresence } from "motion/react"
+import { FiGrid, FiShoppingBag, FiHeart, FiCreditCard, FiUser, FiLogOut, FiChevronRight, FiPlusCircle, FiLayers, FiCheckSquare, FiPieChart, FiUsers, FiAlertTriangle, FiMenu, FiX } from 'react-icons/fi';
 import { authClient } from '@/lib/auth-client';
 import Link from 'next/link';
 import Image from 'next/image';
 import logo from '../../../assets/logo.png'
+
 const Sidebar = () => {
     const [activeItem, setActiveItem] = useState('Overview');
+    const [isMobileOpen, setIsMobileOpen] = useState(false);
+
     const buyerMenuItems = [
         { id: 'Overview', label: 'Overview', icon: <FiGrid className="text-lg" />, path: '/dashboard/buyer' },
         { id: 'My Orders', label: 'My Orders', icon: <FiShoppingBag className="text-lg" />, path: '/dashboard/buyer/my-orders' },
@@ -35,26 +38,31 @@ const Sidebar = () => {
         { id: 'Platform Analytics', label: 'Platform Analytics', icon: <FiPieChart className="text-lg" />, path: '/dashboard/admin/analytics' },
         { id: 'Reported Products', label: 'Reported Products', icon: <FiAlertTriangle className="text-lg" />, path: '/dashboard/admin/reports' },
     ];
+
     const { data: session, isPending } = authClient.useSession();
     const { name, role, image } = session?.user || {};
     const menuItems = (role === "seller" ? sellerMenuItems : role === "buyer" ? buyerMenuItems : role === "admin" ? adminMenuItems : []) || [];
+
     const logOut = async () => {
         await authClient.signOut();
     }
-    return (
-        <aside className="w-64 h-screen bg-white border-r border-slate-200/80 flex flex-col justify-between shadow-sm select-none ">
+
+    // Shared sidebar body — identical markup/logic to the original design.
+    // onNavigate lets the mobile drawer close itself when a link is clicked.
+    const SidebarContent = ({ onNavigate }) => (
+        <>
             <div>
                 <div className="h-20 flex items-center justify-center px-6 border-b border-slate-100">
                     <Link href={'/'} className="flex items-center  gap-3">
-                         <Image src={logo} alt='logo'  height={40} width={70}/>
+                        <Image src={logo} alt='logo' height={40} width={70} />
                     </Link>
                 </div>
                 <div className="px-4 py-6 border-b border-slate-100 flex items-center gap-3.5 bg-slate-50/50">
                     <Avatar size="xxl" className="relative overflow-hidden">
                         {isPending ? (<div className="size-full animate-pulse bg-slate-200" />) : image ? (
-                            <Image src={image} alt={name || "User Avatar"} fill sizes="80px" className="rounded-full object-cover"/>
-                        ) : 
-                        (<Avatar.Fallback>{name?.charAt(0).toUpperCase()}</Avatar.Fallback>)}
+                            <Image src={image} alt={name || "User Avatar"} fill sizes="80px" className="rounded-full object-cover" />
+                        ) :
+                            (<Avatar.Fallback>{name?.charAt(0).toUpperCase()}</Avatar.Fallback>)}
                     </Avatar>
                     <div className="flex flex-col gap-0.5">
                         <span className="text-sm font-bold text-slate-800 uppercase leading-tight">{name}</span>
@@ -68,7 +76,13 @@ const Sidebar = () => {
                     {menuItems.map((item) => {
                         const isActive = activeItem === item.id;
                         return (
-                            <Link key={item.id} href={item.path} onClick={() => setActiveItem(item.id)}
+                            <Link
+                                key={item.id}
+                                href={item.path}
+                                onClick={() => {
+                                    setActiveItem(item.id);
+                                    onNavigate && onNavigate();
+                                }}
                                 className="w-full relative flex items-center justify-between px-4 py-3 rounded-xl text-sm font-semibold transition-all duration-200 group outline-none"
                             >
                                 {isActive && (
@@ -102,10 +116,62 @@ const Sidebar = () => {
                     <span>Sign Out</span>
                 </motion.button>
             </div>
+        </>
+    );
 
-        </aside>
+    return (
+        <>
+            {/* Desktop / tablet — static sidebar, visible from md breakpoint up, identical to original */}
+            <aside className="hidden md:flex w-64 h-screen bg-white border-r border-slate-200/80 flex-col justify-between shadow-sm select-none">
+                <SidebarContent />
+            </aside>
+
+            {/* Mobile — hamburger trigger, fixed top-left, only below md breakpoint */}
+            <button
+                type="button"
+                onClick={() => setIsMobileOpen(true)}
+                aria-label="Open menu"
+                className="md:hidden fixed top-4 left-4 z-40 flex items-center justify-center size-11 rounded-xl bg-white border border-slate-200/80 shadow-sm text-slate-700 active:scale-95 transition-transform"
+            >
+                <FiMenu className="text-xl" />
+            </button>
+
+            {/* Mobile — slide-in drawer + backdrop */}
+            <AnimatePresence>
+                {isMobileOpen && (
+                    <>
+                        <motion.div
+                            key="sidebar-backdrop"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            transition={{ duration: 0.2 }}
+                            onClick={() => setIsMobileOpen(false)}
+                            className="md:hidden fixed inset-0 z-40 bg-slate-900/40"
+                        />
+                        <motion.aside
+                            key="sidebar-drawer"
+                            initial={{ x: '-100%' }}
+                            animate={{ x: 0 }}
+                            exit={{ x: '-100%' }}
+                            transition={{ type: "spring", stiffness: 380, damping: 32 }}
+                            className="md:hidden fixed inset-y-0 left-0 z-50 w-64 h-screen bg-white border-r border-slate-200/80 flex flex-col justify-between shadow-xl select-none"
+                        >
+                            <button
+                                type="button"
+                                onClick={() => setIsMobileOpen(false)}
+                                aria-label="Close menu"
+                                className="absolute top-5 right-3 z-10 flex items-center justify-center size-8 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors"
+                            >
+                                <FiX className="text-lg" />
+                            </button>
+                            <SidebarContent onNavigate={() => setIsMobileOpen(false)} />
+                        </motion.aside>
+                    </>
+                )}
+            </AnimatePresence>
+        </>
     );
 };
 
 export default Sidebar;
-

@@ -26,6 +26,9 @@ export const config = {
         '/dashboard/:role/my-orders',
         '/dashboard/:role/wishlist',
         '/dashboard/:role/manage-users',
+        '/dashboard/:role/manage-products',
+        '/dashboard/:role/analytics',
+        '/dashboard/:role/manageOrders',
         '/dashboard/:role/profile',
     ]
 }

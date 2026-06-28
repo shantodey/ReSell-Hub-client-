@@ -9,8 +9,6 @@ const SellerDashboardPage = () => {
         { id: 3, title: 'Orders Filled', value: '42 Orders', icon: <FiShoppingBag className="text-xl" />, color: 'bg-indigo-50 text-indigo-600 border-indigo-100' },
         { id: 4, title: 'Monthly Growth', value: '+12.5%', icon: <FiTrendingUp className="text-xl" />, color: 'bg-amber-50 text-amber-600 border-amber-100' },
     ];
-
-    // ডেমো প্রোডাক্ট লিস্ট ডাটা
     const recentProducts = [
         { id: '1', name: 'Sony WH-1000XM4 Headphones', category: 'Electronics', price: '$180', status: 'Active', sales: 3 },
         { id: '2', name: 'Nike Air Max 270', category: 'Footwear', price: '$95', status: 'Active', sales: 5 },

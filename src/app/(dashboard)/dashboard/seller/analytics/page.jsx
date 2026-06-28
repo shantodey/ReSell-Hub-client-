@@ -1,14 +1,19 @@
-import DashboardHeadding from '@/app/Component/Dashboard/DashboardHeadding';
 import React from 'react';
+import SellerChartsClient from './SellerChartsClient';
 
-const AnalyticsPage = () => {
+
+export default function SellerAnalyticsPage() {
     return (
-        <section>
-            <div className="container">
-                <DashboardHeadding title=" Analytics" description=" Viues analytics" />
-            </div>
-        </section>
-    );
-};
+        <div className="p-6 bg-gray-50 min-h-screen text-gray-800">
+            <header className="mb-8">
+                <h1 className="text-2xl font-bold">Sales Analytics</h1>
+                <p className="text-sm text-gray-500">
+                    Visual representation of your sales performance, trends, and top items.
+                </p>
+            </header>
 
-export default AnalyticsPage;
+
+            <SellerChartsClient />
+        </div>
+    );
+}
