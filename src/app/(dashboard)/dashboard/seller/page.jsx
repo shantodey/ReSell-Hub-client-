@@ -1,5 +1,5 @@
 import React from 'react';
-import {  FiDollarSign,  FiBox,  FiShoppingBag,  FiClock,  FiArrowUpRight} from 'react-icons/fi';
+import { FiDollarSign, FiBox, FiShoppingBag, FiClock, FiArrowUpRight } from 'react-icons/fi';
 
 
 import { getProductBySeller, fetchSellerOrders } from '@/lib/api/seller/action';
@@ -7,7 +7,7 @@ import { authUserData } from '@/lib/api/forGettingUserData';
 
 
 const SellerDashboardPage = async () => {
-    
+
     const user = await authUserData();
     const sellerEmail = user?.email;
 
@@ -30,20 +30,22 @@ const SellerDashboardPage = async () => {
     let completedSalesCount = 0;
     let revenueSum = 0;
     let pendingOrdersCount = 0;
+    for (const order of allOrders) {
+        const isPaid = order.paymentStatus?.toLowerCase() === 'paid';
+        const isDelivered = order.orderStatus?.toLowerCase() === 'delivered';
+        const isProcessing = order.orderStatus?.toLowerCase() === 'processing';
 
-    allOrders.forEach(order => {
-        const paymentStatus = order.paymentStatus?.toLowerCase();
-        const orderStatus = order.orderStatus?.toLowerCase();
-        
-        if (paymentStatus === 'paid') {
-            completedSalesCount += (Number(order.quantity) || 1);
+        if (isPaid) {
             revenueSum += (Number(order.totalPrice) || 0);
         }
-        
-        if (orderStatus === 'verified') {
+        if (isDelivered) {
+            completedSalesCount += (Number(order.quantity) || 1);
+        }
+        if (isPaid && !isDelivered && !isProcessing) {
             pendingOrdersCount++;
         }
-    });
+    }
+
 
     const cardsStructure = [
         { id: 1, title: 'Total Products', value: totalProductsCount, unit: 'Items active', icon: <FiBox />, color: 'text-slate-900 bg-slate-100 border-slate-200' },
@@ -105,7 +107,7 @@ const SellerDashboardPage = async () => {
                                     {allOrders.map((order) => {
                                         const paymentLower = order.paymentStatus?.toLowerCase();
                                         const statusLower = order.orderStatus?.toLowerCase();
-                                        
+
                                         return (
                                             <tr key={order._id?.$oid || order.id || order._id} className="hover:bg-slate-50/40 transition-colors group">
                                                 <td className="p-4 pl-6 font-medium text-slate-900 max-w-[160px] md:max-w-xs truncate">
@@ -114,22 +116,20 @@ const SellerDashboardPage = async () => {
                                                 <td className="p-4 text-slate-400 tracking-tight font-mono text-[11px]">{order.buyerInfo?.email || "N/A"}</td>
                                                 <td className="p-4 font-semibold text-slate-900">৳{(order.totalPrice || 0).toLocaleString('bn-BD')}</td>
                                                 <td className="p-4 font-medium text-slate-500">{order.quantity || 1}x</td>
-                                                
+
                                                 {/* Payment Status Badge */}
                                                 <td className="p-4">
-                                                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-semibold border ${
-                                                        paymentLower === 'paid' ? 'bg-emerald-50 text-emerald-700 border-emerald-100/70' : 'bg-red-50 text-red-700 border-red-100/70'
-                                                    }`}>
+                                                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-semibold border ${paymentLower === 'paid' ? 'bg-emerald-50 text-emerald-700 border-emerald-100/70' : 'bg-red-50 text-red-700 border-red-100/70'
+                                                        }`}>
                                                         {order.paymentStatus || "Unpaid"}
                                                     </span>
                                                 </td>
 
                                                 <td className="p-4">
-                                                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-semibold border ${
-                                                        statusLower === 'verified' ? 'bg-amber-50 text-amber-700 border-amber-100/70' :
+                                                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-semibold border ${statusLower === 'verified' ? 'bg-amber-50 text-amber-700 border-amber-100/70' :
                                                         statusLower === 'delivered' || statusLower === 'completed' ? 'bg-blue-50 text-blue-700 border-blue-100/70' :
-                                                        'bg-slate-50 text-slate-600 border-slate-100'
-                                                    }`}>
+                                                            'bg-slate-50 text-slate-600 border-slate-100'
+                                                        }`}>
                                                         {order.orderStatus || "Processing"}
                                                     </span>
                                                 </td>
