@@ -201,6 +201,7 @@ export default function CheckoutPage() {
                                 ))}
                             </div>
                         </div>
+
                         <div className="space-y-6">
                             <div className="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm shadow-slate-100/60 sticky top-6">
                                 <div className="flex items-center gap-2 mb-5 pb-3 border-b border-slate-100">
