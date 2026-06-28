@@ -17,6 +17,17 @@ export const getProductDetails = async (id) => {
     const data = await response.json();
     return data;
 };
+export const getProductBySeller = async (sellerEmail) => {
+  const response = await fetch(
+    `${process.env.SERVER_URL}/app/my-products?email=${encodeURIComponent(sellerEmail)}`
+  );
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch products");
+  }
+
+  return response.json();
+};
 
 export const deleteProduct = async (id) => {
     const req = await fetch(`${process.env.SERVER_URL}/app/product/${id}`, {
@@ -46,10 +57,9 @@ export const updateProduct = async (id, cleanData) => {
 
 
 
-// ১. সেলারের ইমেইল দিয়ে অ্যাক্টিভ অর্ডারগুলো ফেচ করার ফাংশন (GET)
+
 export const fetchSellerOrders = async (sellerEmail) => {
     try {
-        // নতুন ডেডিকেটেড রাউট /app/seller/orders
         const res = await fetch(`${process.env.SERVER_URL}/app/seller/orders?email=${sellerEmail}`, { 
             cache: 'no-store' 
         });
@@ -60,7 +70,7 @@ export const fetchSellerOrders = async (sellerEmail) => {
     }
 };
 
-// ২. অর্ডারের স্ট্যাটাস পরিবর্তন করার ফাংশন (POST)
+
 export const sellerOrderAction = async (id, actionType) => {
     try {
         // নতুন ডেডিকেটেড রাউট /app/seller/orders/${id}
