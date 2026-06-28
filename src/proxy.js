@@ -1,34 +1,33 @@
 import { NextResponse } from 'next/server'
-import { auth } from './lib/auth'
-import { headers } from 'next/headers'
+import { auth } from './lib/auth' 
 
-// This function can be marked `async` if using `await` inside
 export async function proxy(request) {
     const session = await auth.api.getSession({
-        headers: await headers()
+        headers: request.headers 
     })
 
+    const { pathname } = request.nextUrl
     if (!session) {
-
         return NextResponse.redirect(new URL('/login', request.url))
     }
+
+
+    const userRole = session.user?.role 
+    if (pathname.startsWith('/dashboard/')) {
+        const pathSegments = pathname.split('/')
+        const requiredRole = pathSegments[2] 
+        if (userRole !== requiredRole) {
+            return NextResponse.redirect(new URL(`/dashboard/${userRole}`, request.url))
+        }
+    }
+
+    return NextResponse.next()
 }
-
-
 
 export const config = {
     matcher: [
         '/dashboard',
-        '/cheackOut',
-        '/dashboard/:role',
-        '/dashboard/:role/addProduct',
-        '/dashboard/:role/myProducts',
-        '/dashboard/:role/my-orders',
-        '/dashboard/:role/wishlist',
-        '/dashboard/:role/manage-users',
-        '/dashboard/:role/manage-products',
-        '/dashboard/:role/analytics',
-        '/dashboard/:role/manageOrders',
-        '/dashboard/:role/profile',
+        '/cheackOut', 
+        '/dashboard/:role/:path*', 
     ]
 }
