@@ -73,7 +73,6 @@ export const fetchSellerOrders = async (sellerEmail) => {
 
 export const sellerOrderAction = async (id, actionType) => {
     try {
-        // নতুন ডেডিকেটেড রাউট /app/seller/orders/${id}
         const response = await fetch(`${process.env.SERVER_URL}/app/seller/orders/${id}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },

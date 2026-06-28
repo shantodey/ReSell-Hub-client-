@@ -7,17 +7,14 @@ export const adminUserSearch = async (search) => {
 
 }
 
-
 export const adminUserDeleteBlock = async (payload, id, actionType) => {
-    const response = await fetch(`${process.env.SERVER_URL}/app/admin/user-action/${id}`, {
-        method: 'POST',
+    const req = await fetch(`${process.env.SERVER_URL}/app/admin/user-action/${id}?actionType=${actionType}`, {
+        method: 'POST', 
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: actionType, ...payload })
+        body: JSON.stringify(payload)
     });
-    if (!response.ok) return { success: false };
-    const data = await response.json();
-    return { success: true, data };
-};
+    return await req.json();
+}
 
 
 export const fetchAdminProducts = async () => {

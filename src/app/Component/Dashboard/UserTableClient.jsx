@@ -11,6 +11,7 @@ export default function UserTableClient({ initialUsers }) {
     const searchParams = useSearchParams();
     const [search, setSearch] = useState(searchParams.get('search') || '');
     const pathname = usePathname();
+
     const handleSearch = (e) => {
         e.preventDefault();
         if (search.trim()) {
@@ -21,15 +22,28 @@ export default function UserTableClient({ initialUsers }) {
     };
 
     const handleAction = async (id, actionType, payload = {}) => {
-        if (!confirm(`Are you sure you want to perform this action?`)) return;
+        // অ্যালার্ট টেক্সট আরও সহজ ও স্পষ্ট করা হলো
+        const confirmMessage = actionType === 'delete' 
+            ? 'Are you sure you want to DELETE this user account?' 
+            : `Are you sure you want to ${payload.isBlocked ? 'BLOCK' : 'UNBLOCK'} this user?`;
+
+        if (!confirm(confirmMessage)) return;
+
         try {
             const res = await adminUserDeleteBlock(payload, id, actionType);
+            
             if (res.success) {
-                toast.success('Successfully',res.success)
+                // টোস্ট নোটিফিকেশন ফিক্স করা হলো
+                toast.success(res.message || 'Action completed successfully!');
+                
+                // ডাইনামিকালি পেজ রিফ্রেশ করে নতুন ডাটা আনা
                 router.refresh();
+            } else {
+                toast.error(res.message || 'Something went wrong');
             }
         } catch (error) {
             console.error("Client interaction error:", error);
+            toast.error('Failed to perform action');
         }
     };
 
@@ -37,7 +51,11 @@ export default function UserTableClient({ initialUsers }) {
         <div>
             {/* Search Option */}
             <form onSubmit={handleSearch} className="mb-4 flex gap-2">
-                <input type="text" placeholder="Search by username..." value={search} onChange={(e) => setSearch(e.target.value)}
+                <input 
+                    type="text" 
+                    placeholder="Search by username or email..." 
+                    value={search} 
+                    onChange={(e) => setSearch(e.target.value)}
                     className="px-4 py-2 border rounded-lg w-full max-w-sm text-sm"
                 />
                 <button type="submit" className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm">Search</button>
@@ -56,11 +74,16 @@ export default function UserTableClient({ initialUsers }) {
                         </tr>
                     </thead>
                     <tbody className="divide-y">
-                        {initialUsers.map((user) => (
+                        {initialUsers?.map((user) => (
                             <tr key={user._id} className="hover:bg-gray-50">
                                 <td className="p-4 font-medium flex items-center gap-3">
-                                     <Image src={user.image} alt={''}  fill  sizes="40px"  className="rounded-full object-cover"/>
-                                    {/* <Image src={user.image} alt="" className="w-8 h-8 rounded-full border object-cover" /> */}
+                                    <Image 
+                                        src={user.image || "/default-avatar.png"} 
+                                        alt={user.name || "user"} 
+                                        width={40} 
+                                        height={40} 
+                                        className="rounded-full border object-cover" 
+                                    />
                                     {user.name}
                                 </td>
                                 <td className="p-4 text-gray-500">{user.email}</td>
@@ -73,14 +96,16 @@ export default function UserTableClient({ initialUsers }) {
                                 <td className="p-4 text-right space-x-2">
                                     {user.role !== 'admin' && (
                                         <>
-                                            <button
+                                            <button 
                                                 onClick={() => handleAction(user._id, 'update', { isBlocked: !user.isBlocked })}
-                                                className="px-2 py-1 text-xs bg-gray-100 rounded hover:bg-gray-200">
+                                                className={`px-2 py-1 text-xs rounded font-medium ${user.isBlocked ? 'bg-green-50 text-green-600 hover:bg-green-100' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
+                                            >
                                                 {user.isBlocked ? 'Unblock' : 'Block'}
                                             </button>
-                                            <button
+                                            <button 
                                                 onClick={() => handleAction(user._id, 'delete')}
-                                                className="px-2 py-1 text-xs bg-red-50 text-red-600 rounded hover:bg-red-100">
+                                                className="px-2 py-1 text-xs bg-red-50 text-red-600 rounded hover:bg-red-100 font-medium"
+                                            >
                                                 Delete
                                             </button>
                                         </>
@@ -88,6 +113,11 @@ export default function UserTableClient({ initialUsers }) {
                                 </td>
                             </tr>
                         ))}
+                        {initialUsers?.length === 0 && (
+                            <tr>
+                                <td colSpan="5" className="p-4 text-center text-gray-500">No users found.</td>
+                            </tr>
+                        )}
                     </tbody>
                 </table>
             </div>
