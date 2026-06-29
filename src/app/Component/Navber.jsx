@@ -90,18 +90,14 @@ const Navber = () => {
                                 </div>
                                 <Dropdown.Menu>
                                     <Dropdown.Item id="profile" textValue="Profile">
-                                        <FiUser className="size-3.5 text-muted" />
-                                        <Label>Profile</Label>
+                                        <Link className="flex items-center gap-2" href={`/dashboard/${role}/profile`}>
+                                            <FiUser className="size-3.5 text-muted" />
+                                            <Label>Profile</Label>
+                                        </Link>
                                     </Dropdown.Item>
                                     <Dropdown.Item id="settings" textValue="Settings">
                                         <IoSettingsOutline className="size-3.5 text-muted" />
                                         <Label>Settings</Label>
-
-                                    </Dropdown.Item>
-                                    <Dropdown.Item id="new-project" textValue="New project">
-                                        <FiShoppingCart className="size-3.5 text-muted" />
-                                        <Label>Create Team</Label>
-
                                     </Dropdown.Item>
                                     <Dropdown.Item onClick={logOut} id="logout" textValue="Logout" variant="danger">
                                         <IoIosLogOut className="size-3.5 text-muted" />

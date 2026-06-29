@@ -5,7 +5,8 @@ import { motion } from "motion/react";
 import { FiArrowRight, FiTag, FiCheckCircle, FiUsers, FiBox, FiShoppingBag } from 'react-icons/fi';
 import Image from 'next/image';
 import Link from 'next/link';
-import { getAllProductsHero } from '@/lib/api/prodectData';
+import { getAllOrdersHero, getAllProductsHero, getAllUsers } from '@/lib/api/prodectData';
+
 
 const containerVariants = {
     hidden: { opacity: 0 },
@@ -37,26 +38,42 @@ const floatingAnimation = {
 
 const HeroSectionPage = () => {
     const [approvedCount, setApprovedCount] = useState(0);
-
+    const [sellerCount, setSellerCount] = useState(0);
+    const [buyerCount, setBuyerCount] = useState(0);
+    const [deliveredCount, setDeliveredCount] = useState(0);
     useEffect(() => {
-        const fetchProductCount = async () => {
-            const data = await getAllProductsHero();
-            if (data && Array.isArray(data)) {
-                const approvedProducts = data.filter(product =>
-                    product.status && product.status.trim() === 'approved'
-                );
-                setApprovedCount(approvedProducts.length);
+        const fetchCounts = async () => {
+            const products = await getAllProductsHero();
+            if (Array.isArray(products)) {
+                const approved = products.filter(p => p.status?.trim() === 'approved');
+                setApprovedCount(approved.length);
+            }
+
+            const users = await getAllUsers();
+            if (Array.isArray(users)) {
+                const sellers = users.filter(u => u.role?.trim() === 'seller');
+                const buyers = users.filter(u => u.role?.trim() === 'buyer');
+                setSellerCount(sellers.length);
+                setBuyerCount(buyers.length);
+            }
+
+            const orders = await getAllOrdersHero();
+            console.log(orders);
+            
+            if (Array.isArray(orders)) {
+                const delivered = orders.filter(o => o.orderStatus?.trim() === 'delivered');
+                setDeliveredCount(delivered.length);
             }
         };
 
-        fetchProductCount();
+        fetchCounts();
     }, []);
 
     const stats = [
-        { id: 1, value: `${approvedCount.toLocaleString()}+`, label: 'Products Listed', icon: <FiBox className="text-blue-600 text-lg" />, bg: 'bg-blue-50' },
-        { id: 2, value: '3,500+', label: 'Verified Sellers', icon: <FiCheckCircle className="text-pink-500 text-lg" />, bg: 'bg-pink-50' },
-        { id: 3, value: '8,000+', label: 'Happy Buyers', icon: <FiUsers className="text-indigo-600 text-lg" />, bg: 'bg-indigo-50' },
-        { id: 4, value: '15,000+', label: 'Orders Completed', icon: <FiShoppingBag className="text-emerald-600 text-lg" />, bg: 'bg-emerald-50' },
+        { id: 1, value: `${approvedCount}+`, label: 'Products Listed', icon: <FiBox className="text-blue-600 text-lg" />, bg: 'bg-blue-50' },
+        { id: 2, value: `${sellerCount}+`, label: 'Verified Sellers', icon: <FiCheckCircle className="text-pink-500 text-lg" />, bg: 'bg-pink-50' },
+        { id: 3, value: `${buyerCount}+`, label: 'Happy Buyers', icon: <FiUsers className="text-indigo-600 text-lg" />, bg: 'bg-indigo-50' },
+        { id: 4, value: `${deliveredCount}+`, label: 'Orders Completed', icon: <FiShoppingBag className="text-emerald-600 text-lg" />, bg: 'bg-emerald-50' },
     ];
     return (
         <section className="relative w-full min-h-[650px] bg-gradient-to-br from-slate-50 via-white to-blue-50/20 overflow-hidden py-12 lg:py-20 px-4 md:px-8 max-w-7xl mx-auto flex items-center">

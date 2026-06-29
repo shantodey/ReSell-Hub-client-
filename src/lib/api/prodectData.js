@@ -14,6 +14,33 @@ export const getAllProductsHero = async () => {
     }
 }
 
+export const getAllUsers = async () => {
+    try {
+        const res = await fetch(`${process.env.SERVER_URL}/app/admin/users`, {
+            cache: "no-store",
+        });
+        if (!res.ok) return [];
+        return await res.json();
+    } catch (error) {
+        console.error("Error fetching users:", error);
+        return [];
+    }
+}
+
+
+export const getAllOrdersHero = async () => {
+    try {
+        const res = await fetch(`${process.env.SERVER_URL}/app/all-orders`, {
+            cache: "no-store",
+        });
+        if (!res.ok) return [];
+        return await res.json();
+    } catch (error) {
+        console.error("Error fetching all orders for hero:", error);
+        return [];
+    }
+}
+
 export const prodectData = async (filters = {}) => {
     const { search = "", category = "", sort = "" } = filters;
     const queryParams = new URLSearchParams({ search, category, sort }).toString();

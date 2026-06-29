@@ -1,31 +1,35 @@
 "use client";
 
+import Image from "next/image";
 import React, { useState } from "react";
 import { FaQuoteLeft, FaHandshake, FaShoppingBag, FaStar } from "react-icons/fa";
 
-// Sample success stories data in English
+
 const stories = [
     {
         id: 1,
-        name: "Arif Rahman",
+        name: "Shanto Chandra",
+        src: "https://i.ibb.co/TBdqWvdp/IMG-20260613-165118-715-1382000955.jpg",
         role: "seller",
         location: "Dhaka",
-        item: "Asus ROG Gaming Laptop",
-        story: "I listed my old gaming laptop on ReSell Hub and found a genuine buyer within just 3 days! The platform's security and seller guidelines made the transaction completely hassle-free.",
+        item: "DJI Mini 5 Pro Fly More Combo",
+        story: "I listed my high-end drone setup on ReSell Hub. The platform's seller verification made it incredibly safe to handle such an expensive gadget transaction without any risk.",
         rating: 5
     },
     {
         id: 2,
-        name: "Farjana Akter",
+        name: "Manik dey",
+        src: "https://i.ibb.co/9kf2nZz8/IDPhoto-20260331-201010.jpg",
         role: "buyer",
         location: "Chittagong",
-        item: "Canon EOS 80D Camera",
-        story: "I wanted a good camera to start my photography journey but had a tight budget. Found a mint condition DSLR here at an unbeatable price. ReSell Hub helped me achieve my dream!",
+        item: "PNY XLR8 Gaming 32GB DDR5 RAM",
+        story: "I was looking for a high-performance desktop RAM upgrade within a budget. Found this excellent condition DDR5 6000MHz kit at a great price. ReSell Hub helped me complete my build seamlessly!",
         rating: 5
     },
     {
         id: 3,
-        name: "Tanvir Ahmed",
+        name: "MediMap",
+        src: "https://lh3.googleusercontent.com/a/ACg8ocJY4OxvAfnQPxJuDTU4b7NzJ-cm44izHDgzmjPbbD10YIlKX1c=s96-c",
         role: "seller",
         location: "Sylhet",
         item: "Mechanical Keyboard & Mouse",
@@ -34,11 +38,12 @@ const stories = [
     },
     {
         id: 4,
-        name: "Rahat Kabir",
+        name: "Manik chandra Dey",
+        src: "https://lh3.googleusercontent.com/a/ACg8ocJVbNPF15v8Pf3Ay-eEIoVDRSZ5aoaJ7tyZ2LD3nDGQwJ2rvWc=s96-c",
         role: "buyer",
         location: "Dhaka",
-        item: "iPhone 13 Pro Max",
-        story: "I was highly skeptical about buying used phones online. However, the verified details and transparent communication with the seller gave me total confidence. Highly recommended!",
+        item: "Canon EOS 80D Camera",
+        story: "I was highly skeptical about buying gear online, but the verified listing details and secure payment status for my order gave me total confidence. Excellent platform for tech enthusiasts!",
         rating: 5
     }
 ];
@@ -63,37 +68,16 @@ export default function SuccessStories() {
             </div>
 
             <div className="flex justify-center gap-2 mb-12">
-                <button 
-                    type="button"
-                    className={`px-4 py-2 text-xs font-bold rounded-xl transition-all duration-200 ${
-                        filter === "all" 
-                            ? "bg-slate-950 text-white shadow-sm" 
-                            : "bg-slate-100 text-slate-600 hover:bg-slate-200"
-                    }`}
-                    onClick={() => setFilter("all")}
-                >
-                    All Stories
+                <button type="button" className={`px-4 py-2 text-xs font-bold rounded-xl transition-all duration-200 
+                ${filter === "all" ? "bg-slate-950 text-white shadow-sm" : "bg-slate-100 text-slate-600 hover:bg-slate-200"}`}
+                    onClick={() => setFilter("all")}>All Stories
                 </button>
-                <button 
-                    type="button"
-                    className={`px-4 py-2 text-xs font-bold rounded-xl transition-all duration-200 ${
-                        filter === "buyer" 
-                            ? "bg-blue-600 text-white shadow-sm" 
-                            : "bg-slate-100 text-slate-600 hover:bg-slate-200"
-                    }`}
-                    onClick={() => setFilter("buyer")}
-                >
+                <button type="button" className={`px-4 py-2 text-xs font-bold rounded-xl transition-all duration-200 
+                ${filter === "buyer" ? "bg-blue-600 text-white shadow-sm" : "bg-slate-100 text-slate-600 hover:bg-slate-200"}`} onClick={() => setFilter("buyer")}>
                     Buyers
                 </button>
-                <button 
-                    type="button"
-                    className={`px-4 py-2 text-xs font-bold rounded-xl transition-all duration-200 ${
-                        filter === "seller" 
-                            ? "bg-emerald-600 text-white shadow-sm" 
-                            : "bg-slate-100 text-slate-600 hover:bg-slate-200"
-                    }`}
-                    onClick={() => setFilter("seller")}
-                >
+                <button type="button" className={`px-4 py-2 text-xs font-bold rounded-xl transition-all duration-200 
+                ${filter === "seller" ? "bg-emerald-600 text-white shadow-sm" : "bg-slate-100 text-slate-600 hover:bg-slate-200"}`} onClick={() => setFilter("seller")}>
                     Sellers
                 </button>
             </div>
@@ -101,8 +85,7 @@ export default function SuccessStories() {
             {/* Grid Layout for Stories */}
             <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {filteredStories.map((story) => (
-                    <div 
-                        key={story.id} 
+                    <div key={story.id}
                         className="bg-white border border-slate-200 rounded-2xl p-6 hover:border-slate-300 hover:shadow-md transition-all duration-200 flex flex-col justify-between"
                     >
                         {/* Top Section: Role Badge & Quote Icon */}
@@ -132,10 +115,13 @@ export default function SuccessStories() {
                         {/* User Profile Footer */}
                         <div className="border-t border-slate-100 pt-4 flex items-center justify-between">
                             <div className="flex items-center gap-3">
-                                {/* Fallback Initial Avatar Container */}
-                                <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-xs font-bold text-slate-700 uppercase">
-                                    {story.name.charAt(0)}
+                                {/* Avatar Image Container */}
+                                <div className="relative w-8 h-8 rounded-full overflow-hidden bg-slate-100 flex-shrink-0">
+                                    <Image src={story.src} alt={story.name}  fill  sizes="32px"  className="object-cover"/>
+                                    
                                 </div>
+
+                                {/* User Details */}
                                 <div className="flex flex-col">
                                     <span className="text-xs font-bold text-slate-800">{story.name}</span>
                                     <span className="text-[10px] text-slate-400">{story.location}</span>
@@ -150,29 +136,7 @@ export default function SuccessStories() {
                 ))}
             </div>
 
-            {/* White-Themed CTA Section */}
-            <div className="max-w-4xl mx-auto text-center mt-24 border border-slate-200 rounded-3xl p-8 sm:p-12 bg-slate-50">
-                <h2 className="text-2xl sm:text-3xl font-black text-slate-900 mb-3">
-                    Have a story to share?
-                </h2>
-                <p className="text-slate-500 mb-8 max-w-md mx-auto text-sm">
-                    Tell us about your experience buying or selling on ReSell Hub and inspire others in building a sustainable marketplace.
-                </p>
-                <div className="flex flex-wrap justify-center gap-3">
-                    <button 
-                        type="button" 
-                        className="bg-slate-950 text-white font-bold text-xs h-10 px-6 rounded-xl hover:bg-slate-800 transition-colors shadow-sm"
-                    >
-                        Share Your Story
-                    </button>
-                    <button 
-                        type="button" 
-                        className="bg-white text-slate-700 border border-slate-200 hover:bg-slate-100 font-bold text-xs h-10 px-6 rounded-xl transition-colors"
-                    >
-                        Start Trading
-                    </button>
-                </div>
-            </div>
+           
         </div>
     );
 }

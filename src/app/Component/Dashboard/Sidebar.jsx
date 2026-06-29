@@ -14,7 +14,6 @@ const Sidebar = () => {
     const buyerMenuItems = [
         { id: 'Overview', label: 'Overview', icon: <FiGrid className="text-lg" />, path: '/dashboard/buyer' },
         { id: 'My Orders', label: 'My Orders', icon: <FiShoppingBag className="text-lg" />, path: '/dashboard/buyer/my-orders' },
-        { id: 'Wishlist', label: 'Wishlist', icon: <FiHeart className="text-lg" />, path: '/dashboard/buyer/wishlist' },
         { id: 'Payment History', label: 'Payment History', icon: <FiCreditCard className="text-lg" />, path: '/dashboard/buyer/payments' },
         { id: 'Profile Management', label: 'Profile Settings', icon: <FiUser className="text-lg" />, path: '/dashboard/buyer/profile' },
     ];

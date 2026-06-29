@@ -6,7 +6,6 @@ import React from 'react';
 const AdminOverView = async() => {
       const totalProducts = await prodectData();
      const stats = await getOverviewData();
-     console.log(stats);
      
    return (
         <div className="p-6 bg-gray-50 min-h-screen">
@@ -15,10 +14,7 @@ const AdminOverView = async() => {
                 <p className="text-gray-500">ReSellHub platform realtime data overview.</p>
             </header>
 
-            {/* Display Cards Grid */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                
-                {/* Total Users Card */}
                 <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex flex-col justify-between">
                     <div>
                         <span className="text-sm font-medium text-gray-400 uppercase tracking-wider">Total Users</span>
@@ -26,8 +22,6 @@ const AdminOverView = async() => {
                     </div>
                     <div className="mt-4 text-xs text-gray-400">Total registered accounts</div>
                 </div>
-
-                {/* Total Products Card */}
                 <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex flex-col justify-between">
                     <div>
                         <span className="text-sm font-medium text-gray-400 uppercase tracking-wider">Total Products</span>
@@ -35,8 +29,6 @@ const AdminOverView = async() => {
                     </div>
                     <div className="mt-4 text-xs text-gray-400">Items listed for sell</div>
                 </div>
-
-                {/* Total Orders Card */}
                 <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex flex-col justify-between">
                     <div>
                         <span className="text-sm font-medium text-gray-400 uppercase tracking-wider">Total Orders</span>

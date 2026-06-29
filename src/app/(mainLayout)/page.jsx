@@ -2,6 +2,7 @@
 import HeroSectionPage from '../Component/HeroSection';
 import LatestProduct from '../Component/LatestProduct';
 import SuccessStories from '../Component/SuccessStories';
+import SustainabilityImpact from '../Component/SustainabilityImpact';
 
 
 const page = () => {
@@ -10,6 +11,7 @@ const page = () => {
             <HeroSectionPage />
            <LatestProduct/>
            <SuccessStories/>
+           <SustainabilityImpact/>
         </>
     );
 };
