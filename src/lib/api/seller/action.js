@@ -1,12 +1,11 @@
 "use server";
 
-import { authClient } from "@/lib/auth-client";
+
 import { serverMutation } from "../server";
 
 
 export const addProdectItems = async (data) => {
-    const {data:token}=await authClient.token()
-    console.log(token);
+
     
     const resData = await serverMutation('app/product', 'POST', data);
     return resData;
