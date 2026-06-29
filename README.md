@@ -7,13 +7,13 @@ ReSell Hub – Second-Hand Marketplace Platform
 ReSell Hub is a modern online marketplace where users can buy and sell pre-owned products safely and efficiently. The platform helps reduce waste, promote sustainable consumption, and give sellers a simple way to earn from unused items while helping buyers find affordable products.
 
 ## Live URL
-- Live Site: TBD
-- Client Repository: TBD
-- Server Repository: TBD
+- Live Site: https://resellhub-scd.vercel.app
+- Client Repository: https://github.com/shantodey/ReSell-Hub-client-
+- Server Repository: https://github.com/shantodey/resellhub_server
 
 ## Admin Credentials
 - Admin Email: admin@example.com
-- Admin Password: admin123456
+- Admin Password: 123456LK
 
 ## Key Features
 - User authentication with email/password and Google login

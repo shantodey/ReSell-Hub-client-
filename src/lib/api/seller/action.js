@@ -1,8 +1,13 @@
 "use server";
 
+import { authClient } from "@/lib/auth-client";
 import { serverMutation } from "../server";
 
+
 export const addProdectItems = async (data) => {
+    const {data:token}=await authClient.token()
+    console.log(token);
+    
     const resData = await serverMutation('app/product', 'POST', data);
     return resData;
 }
@@ -13,7 +18,6 @@ export const getProductDetails = async (id) => {
     if (!response.ok) {
         throw new Error("Failed to load product from backend");
     }
-    
     const data = await response.json();
     return data;
 };

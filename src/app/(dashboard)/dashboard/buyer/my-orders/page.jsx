@@ -6,14 +6,6 @@ import { cheackOutProdectData } from "@/lib/api/prodectData";
 
 export default async function MyOrdersPage() {
     const user = await authUserData();
-
-    if (!user?.email) {
-        return (
-            <div className="min-h-[50vh] flex flex-col items-center justify-center">
-                <p className="text-slate-600 font-semibold">Please log in to view your orders.</p>
-            </div>
-        );
-    }
     const res = await cheackOutProdectData({ user: { email: user.email } });
     const paidOrders = (res.orders || []).filter(order => order.paymentStatus === "paid");
 
@@ -36,9 +28,6 @@ export default async function MyOrdersPage() {
                     </div>
                     <h3 className="text-base font-bold text-slate-800 mb-1">No orders found</h3>
                     <p className="text-slate-500 text-xs mb-5">You havent completed any payment transactions yet.</p>
-                    <Link href="/checkout" className="inline-flex items-center text-xs font-bold text-blue-600 hover:underline">
-                        Go to Pending Checkout &rarr;
-                    </Link>
                 </div>
             ) : (
                 <div className="overflow-x-auto">
