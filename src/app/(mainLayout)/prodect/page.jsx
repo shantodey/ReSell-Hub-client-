@@ -1,15 +1,29 @@
 import ProductCard from "@/app/Component/ProductCard";
 import { prodectData } from "@/lib/api/prodectData";
+import { Pagination } from "@heroui/react";
+import { Table } from "@heroui/react";
+import Link from "next/link";
+import { GrNext, GrPrevious } from "react-icons/gr";
 
 export const dynamic = "force-dynamic";
 
 const AllProductsPage = async ({ searchParams }) => {
     const resolvedParams = await searchParams;
+    const pageNumber = resolvedParams?.page || "1";
     const search = resolvedParams?.search || "";
     const category = resolvedParams?.category || "";
     const sort = resolvedParams?.sort || "";
 
-    const mockProducts = await prodectData({ search, category, sort });
+    const mockProducts = await prodectData({ search, category, sort, pageNumber });
+    const mockProductsdata = mockProducts?.data;
+    const totalPages = mockProducts?.totalPage;
+    const page = mockProducts?.page;
+    console.log(mockProducts);
+    
+    const pages = [];
+    for (let i = 1; i <= totalPages; i++) {
+        pages.push(i)
+    }
 
     return (
         <main className="container mx-auto px-6 py-12">
@@ -49,21 +63,53 @@ const AllProductsPage = async ({ searchParams }) => {
                 </form>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                    {mockProducts && mockProducts.length > 0 ? ((() => {
-                            const approvedProducts = mockProducts.filter(
-                                product => product.status?.trim().toLowerCase() === "approved"
-                            );
-                            if (approvedProducts.length === 0) {
-                                return <p className="text-slate-500 col-span-full text-center py-12">No approved products found!</p>;
-                            }
-                            return approvedProducts.map((product) => (
-                                <ProductCard key={product._id} product={product} />
-                            ));
-                        })()
+                    {mockProductsdata && mockProductsdata.length > 0 ? ((() => {
+                        const approvedProducts = mockProductsdata.filter(
+                            product => product.status?.trim().toLowerCase() === "approved"
+                        );
+                        if (approvedProducts.length === 0) {
+                            return <p className="text-slate-500 col-span-full text-center py-12">No approved products found!</p>;
+                        }
+                        return approvedProducts.map((product) => (
+                            <ProductCard key={product._id} product={product} />
+                        ));
+                    })()
                     ) : (
                         <p className="text-slate-500 col-span-full text-center py-12">No products found!</p>
                     )}
                 </div>
+                <Table.Footer>
+                    <Pagination size="sm">
+                        <Pagination.Summary>
+
+                        </Pagination.Summary>
+                        <Pagination.Content>
+                            <Pagination.Item>
+                                <Pagination.Previous isDisabled={page === 1}>
+                                    <Link  className="flex items-center gap-1" href={`/prodect?page=${page-1}`}>
+                                        <GrPrevious /> Prev
+                                    </Link>
+                                </Pagination.Previous>
+                            </Pagination.Item>
+                            {pages.map((p) => (
+                                <Pagination.Item key={p}>
+                                    <Link href={`/prodect?page=${p}`}>
+                                        <Pagination.Link isActive={p === page} >
+                                            {p}
+                                        </Pagination.Link>
+                                    </Link>
+                                </Pagination.Item>
+                            ))}
+                            <Pagination.Item>
+                                <Pagination.Next isDisabled={page === totalPages}>
+                                    <Link className="flex items-center gap-1" href={`/prodect?page=${page+1}`}>
+                                        Next<GrNext />
+                                    </Link>
+                                </Pagination.Next>
+                            </Pagination.Item>
+                        </Pagination.Content>
+                    </Pagination>
+                </Table.Footer>
             </div>
         </main>
     );

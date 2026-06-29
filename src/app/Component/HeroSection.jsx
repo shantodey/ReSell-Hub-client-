@@ -1,11 +1,10 @@
 "use client";
 
-import React, { useEffect, useState } from 'react';
 import { motion } from "motion/react";
-import { FiArrowRight, FiTag, FiCheckCircle, FiUsers, FiBox, FiShoppingBag } from 'react-icons/fi';
+import { FiArrowRight, FiTag} from 'react-icons/fi';
 import Image from 'next/image';
 import Link from 'next/link';
-import { getAllOrdersHero, getAllProductsHero, getAllUsers } from '@/lib/api/prodectData';
+
 
 
 const containerVariants = {
@@ -37,49 +36,11 @@ const floatingAnimation = {
 };
 
 const HeroSectionPage = () => {
-    const [approvedCount, setApprovedCount] = useState(0);
-    const [sellerCount, setSellerCount] = useState(0);
-    const [buyerCount, setBuyerCount] = useState(0);
-    const [deliveredCount, setDeliveredCount] = useState(0);
-    useEffect(() => {
-        const fetchCounts = async () => {
-            const products = await getAllProductsHero();
-            if (Array.isArray(products)) {
-                const approved = products.filter(p => p.status?.trim() === 'approved');
-                setApprovedCount(approved.length);
-            }
-
-            const users = await getAllUsers();
-            if (Array.isArray(users)) {
-                const sellers = users.filter(u => u.role?.trim() === 'seller');
-                const buyers = users.filter(u => u.role?.trim() === 'buyer');
-                setSellerCount(sellers.length);
-                setBuyerCount(buyers.length);
-            }
-
-            const orders = await getAllOrdersHero();
-            console.log(orders);
-            
-            if (Array.isArray(orders)) {
-                const delivered = orders.filter(o => o.orderStatus?.trim() === 'delivered');
-                setDeliveredCount(delivered.length);
-            }
-        };
-
-        fetchCounts();
-    }, []);
-
-    const stats = [
-        { id: 1, value: `${approvedCount}+`, label: 'Products Listed', icon: <FiBox className="text-blue-600 text-lg" />, bg: 'bg-blue-50' },
-        { id: 2, value: `${sellerCount}+`, label: 'Verified Sellers', icon: <FiCheckCircle className="text-pink-500 text-lg" />, bg: 'bg-pink-50' },
-        { id: 3, value: `${buyerCount}+`, label: 'Happy Buyers', icon: <FiUsers className="text-indigo-600 text-lg" />, bg: 'bg-indigo-50' },
-        { id: 4, value: `${deliveredCount}+`, label: 'Orders Completed', icon: <FiShoppingBag className="text-emerald-600 text-lg" />, bg: 'bg-emerald-50' },
-    ];
+   
     return (
         <section className="relative w-full min-h-[650px] bg-gradient-to-br from-slate-50 via-white to-blue-50/20 overflow-hidden py-12 lg:py-20 px-4 md:px-8 max-w-7xl mx-auto flex items-center">
             <motion.div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center w-full" initial="hidden" animate="visible" variants={containerVariants} >
                 <div className="lg:col-span-5 flex flex-col space-y-6 z-10">
-
                     <motion.h1 variants={fadeInUp} className="text-4xl md:text-5xl lg:text-6xl font-black text-slate-950 tracking-tight leading-[1.15]" >
                         Buy & Sell Quality <br />
                         Pre-Owned Products <br />
@@ -100,22 +61,6 @@ const HeroSectionPage = () => {
                             <FiTag className="mr-1 text-lg" /> Start Selling
                         </Link>
 
-                    </motion.div>
-
-
-                    <motion.div variants={fadeInUp} className="grid grid-cols-2 gap-3.5 pt-6 border-t border-slate-100" >
-                        {stats.map((stat) => (
-                            <div key={stat.id}
-                                className="flex items-center gap-3 bg-white/60 backdrop-blur-md p-3.5 rounded-2xl border border-slate-100/80 shadow-sm hover:shadow-md transition-all duration-300">
-                                <div className={`p-2.5 rounded-xl ${stat.bg} flex items-center justify-center shrink-0 shadow-inner`}>
-                                    {stat.icon}
-                                </div>
-                                <div>
-                                    <div className="text-lg font-black text-slate-900 leading-none mb-1">{stat.value}</div>
-                                    <div className="text-xs font-semibold text-slate-400">{stat.label}</div>
-                                </div>
-                            </div>
-                        ))}
                     </motion.div>
                 </div>
 

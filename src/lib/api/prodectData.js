@@ -1,18 +1,7 @@
 "use server"
 
 
-export const getAllProductsHero = async () => {
-    try {
-        const res = await fetch(`${process.env.SERVER_URL}/app/product`, {
-            cache: "no-store",
-        });
-        if (!res.ok) return [];
-        return await res.json();
-    } catch (error) {
-        console.error("Error fetching products:", error);
-        return [];
-    }
-}
+
 
 export const getAllUsers = async () => {
     try {
@@ -42,8 +31,8 @@ export const getAllOrdersHero = async () => {
 }
 
 export const prodectData = async (filters = {}) => {
-    const { search = "", category = "", sort = "" } = filters;
-    const queryParams = new URLSearchParams({ search, category, sort }).toString();
+    const { search = "", category = "", sort = "",pageNumber = "1" } = filters;
+    const queryParams = new URLSearchParams({ search, category, sort,page: pageNumber }).toString();
     const url = `${process.env.SERVER_URL}/app/product?${queryParams}`;
     try {
         const res = await fetch(url, {

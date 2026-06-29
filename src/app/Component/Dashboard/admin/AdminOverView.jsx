@@ -25,7 +25,7 @@ const AdminOverView = async() => {
                 <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex flex-col justify-between">
                     <div>
                         <span className="text-sm font-medium text-gray-400 uppercase tracking-wider">Total Products</span>
-                        <h3 className="text-4xl font-bold text-green-600 mt-2">{totalProducts.length}</h3>
+                        <h3 className="text-4xl font-bold text-green-600 mt-2">{totalProducts.totalProdect}</h3>
                     </div>
                     <div className="mt-4 text-xs text-gray-400">Items listed for sell</div>
                 </div>

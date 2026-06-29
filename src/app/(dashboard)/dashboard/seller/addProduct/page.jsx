@@ -119,7 +119,7 @@ const ADDProductPage = () => {
                         <FiPlus className="h-6 w-6 rotate-45" /> 
                     </div>
                     <h2 className="text-2xl font-bold text-slate-900">Product Listed Successfully!</h2>
-                    <p className="text-sm text-slate-500">Your product is now live and available for buyers.</p>
+                    <p className="text-sm text-slate-500">Your product Waiting for Admin Approval </p>
                     <Button onClick={() => setIsSuccess(false)} className="mt-2 bg-blue-600 text-white font-semibold rounded-xl">
                         List Another Product
                     </Button>
@@ -219,7 +219,6 @@ const ADDProductPage = () => {
                                 {errors.quantity && <FieldError className="mt-1 text-xs text-rose-600">{errors.quantity.message}</FieldError>}
                             </TextField>
 
-                            {/* Multiple Image Upload Component */}
                             <div className="flex flex-col gap-2">
                                 <label className="text-sm font-semibold text-slate-700 flex items-center gap-1">
                                     <FiCamera className="h-4 w-4 text-slate-400" /> Product Images
@@ -253,7 +252,6 @@ const ADDProductPage = () => {
                                 <span className="text-xs text-slate-400 font-medium">You can upload multiple images. Click on an image to remove it.</span>
                             </div>
 
-                            {/* Description */}
                             <div className="flex flex-col gap-1.5">
                                 <label className="text-sm font-semibold text-slate-700">Description</label>
                                 <textarea
