@@ -47,7 +47,9 @@ const Navber = () => {
                         <span className="sr-only">Menu</span>
                         {isMenuOpen ? (<IoMdClose />) : (<CiMenuFries />)}
                     </button>
+                    <Link href={'/'}>
                     <Image src={logo} alt='logo' height={40} width={70} />
+                    </Link>
                 </div>
                 <ul className="hidden items-center gap-4 md:flex">
                     <li><Link href="/" className={pathname === "/" ? "text-blue-600 font-bold" : "text-gray-600"}>  Home</Link></li>
@@ -95,10 +97,6 @@ const Navber = () => {
                                             <Label>Profile</Label>
                                         </Link>
                                     </Dropdown.Item>
-                                    <Dropdown.Item id="settings" textValue="Settings">
-                                        <IoSettingsOutline className="size-3.5 text-muted" />
-                                        <Label>Settings</Label>
-                                    </Dropdown.Item>
                                     <Dropdown.Item onClick={logOut} id="logout" textValue="Logout" variant="danger">
                                         <IoIosLogOut className="size-3.5 text-muted" />
                                         <Label>Log Out</Label>
@@ -120,8 +118,8 @@ const Navber = () => {
             {isMenuOpen && (
                 <div className="border-t border-separator md:hidden">
                     <ul className="flex flex-col gap-2 p-4">
-                        <li>  <Link href="#" className="block py-2"> Features</Link> </li>
-                        <li> <Link href="#" className="block py-2"> Pricing</Link></li>
+                        <li> <Link href="/prodect" className={pathname === "/prodect" ? "text-blue-600 font-bold" : "text-gray-600"}> Prodect</Link></li>
+                        <li>{isPending ? (<span>Dashboard</span>) : (<Link href={`/dashboard/${role}`}>Dashboard</Link>)}</li>
                     </ul>
                 </div>
             )}

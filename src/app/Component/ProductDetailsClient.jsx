@@ -120,9 +120,7 @@ export default function ProductDetailsClient({ product }) {
                         <Button fullWidth disabled className="bg-slate-200 h-12 font-bold text-slate-400">Loading Session...</Button>
                     ) : session?.user ? (
                         <Button fullWidth className="bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm h-12 rounded-xl shadow-md transition-transform active:scale-95"
-                            startContent={<FaShoppingCart />}
-                            isLoading={isSubmitting} 
-                            onClick={handleBuyNow}
+                            startContent={<FaShoppingCart />} isLoading={isSubmitting} onClick={handleBuyNow}
                         >
                             Buy Now
                         </Button>
