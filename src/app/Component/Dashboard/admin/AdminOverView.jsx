@@ -1,28 +1,13 @@
+import { getOverviewData } from '@/lib/api/admin/adminApi';
 import { prodectData } from '@/lib/api/prodectData';
 import React from 'react';
 
 
-
-async function getOverviewData() {
-    try {
-        const res = await fetch(`${process.env.SERVER_URL}/app/admin/overview`, {
-            next: { revalidate: 10 } 
-        });
-
-        if (!res.ok) {
-            throw new Error('Failed to fetch admin stats');
-        }
-
-        const result = await res.json();
-        return result.data;
-    } catch (error) {
-        console.error("Error loading admin stats:", error);
-        return { totalUsers: 0, totalProducts: 0, totalOrders: 0 };
-    }
-}
 const AdminOverView = async() => {
       const totalProducts = await prodectData();
      const stats = await getOverviewData();
+     console.log(stats);
+     
    return (
         <div className="p-6 bg-gray-50 min-h-screen">
             <header className="mb-8">

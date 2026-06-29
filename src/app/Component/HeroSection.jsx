@@ -1,10 +1,11 @@
 "use client";
 
-import React from 'react';
-import { motion } from "motion/react"
+import React, { useEffect, useState } from 'react';
+import { motion } from "motion/react";
 import { FiArrowRight, FiTag, FiCheckCircle, FiUsers, FiBox, FiShoppingBag } from 'react-icons/fi';
 import Image from 'next/image';
 import Link from 'next/link';
+import { getAllProductsHero } from '@/lib/api/prodectData';
 
 const containerVariants = {
     hidden: { opacity: 0 },
@@ -35,8 +36,24 @@ const floatingAnimation = {
 };
 
 const HeroSectionPage = () => {
+    const [approvedCount, setApprovedCount] = useState(0);
+
+    useEffect(() => {
+        const fetchProductCount = async () => {
+            const data = await getAllProductsHero();
+            if (data && Array.isArray(data)) {
+                const approvedProducts = data.filter(product =>
+                    product.status && product.status.trim() === 'approved'
+                );
+                setApprovedCount(approvedProducts.length);
+            }
+        };
+
+        fetchProductCount();
+    }, []);
+
     const stats = [
-        { id: 1, value: '12,000+', label: 'Products Listed', icon: <FiBox className="text-blue-600 text-lg" />, bg: 'bg-blue-50' },
+        { id: 1, value: `${approvedCount.toLocaleString()}+`, label: 'Products Listed', icon: <FiBox className="text-blue-600 text-lg" />, bg: 'bg-blue-50' },
         { id: 2, value: '3,500+', label: 'Verified Sellers', icon: <FiCheckCircle className="text-pink-500 text-lg" />, bg: 'bg-pink-50' },
         { id: 3, value: '8,000+', label: 'Happy Buyers', icon: <FiUsers className="text-indigo-600 text-lg" />, bg: 'bg-indigo-50' },
         { id: 4, value: '15,000+', label: 'Orders Completed', icon: <FiShoppingBag className="text-emerald-600 text-lg" />, bg: 'bg-emerald-50' },
@@ -62,7 +79,7 @@ const HeroSectionPage = () => {
                         <Link href="/prodect" className="bg-blue-600 text-white font-bold flex items-center shadow-md hover:bg-blue-700 transition-all rounded-xl px-6 py-3.5">
                             Explore Products <FiArrowRight className="ml-1 text-lg" />
                         </Link>
-                        <Link href="/dashboard/seller/addProduct"  className="border-2 border-slate-200 text-blue-600 font-bold flex items-center hover:bg-slate-50 hover:border-slate-300 transition-all rounded-xl px-6 py-3.5 bg-white shadow-sm">
+                        <Link href="/dashboard/seller/addProduct" className="border-2 border-slate-200 text-blue-600 font-bold flex items-center hover:bg-slate-50 hover:border-slate-300 transition-all rounded-xl px-6 py-3.5 bg-white shadow-sm">
                             <FiTag className="mr-1 text-lg" /> Start Selling
                         </Link>
 

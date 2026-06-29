@@ -48,7 +48,7 @@ export default function ProductTableClient({ initialProducts }) {
                                     <span className="block font-medium">{product.sellerInfo?.name}</span>
                                     <span className="text-gray-400">{product.sellerInfo?.email}</span>
                                 </td>
-                                <td className="p-4 font-semibold text-gray-900">৳{product.price}</td>
+                                <td className="p-4 font-semibold text-gray-900">{product.price}</td>
                                 <td className="p-4">
                                     <span className={`px-2 py-0.5 rounded text-xs font-semibold capitalize ${
                                         product.status?.trim() === 'approved' ? 'bg-green-100 text-green-700' :

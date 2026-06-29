@@ -17,6 +17,23 @@ export const getProductDetails = async (id) => {
     const data = await response.json();
     return data;
 };
+
+// @/services/product.js
+
+export const getMyProducts = async (email, options = {}) => {
+
+  
+  const res = await fetch(`${process.env.SERVER_URL}/app/my-products?email=${email}`, {
+    method: 'GET',
+    signal: options?.signal instanceof AbortSignal ? options.signal : undefined, 
+  });
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch products");
+  }
+
+  return res.json();
+};
 export const getProductBySeller = async (sellerEmail) => {
   const response = await fetch(
     `${process.env.SERVER_URL}/app/my-products?email=${encodeURIComponent(sellerEmail)}`

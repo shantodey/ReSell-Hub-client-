@@ -1,5 +1,24 @@
 "use server"
 
+
+
+ export const getOverviewData=async()=> {
+    try {
+        const res = await fetch(`${process.env.SERVER_URL}/app/admin/overview`, {
+            cache: 'no-store'
+        });
+
+        if (!res.ok) {
+            throw new Error('Failed to fetch admin stats');
+        }
+
+        const result = await res.json();
+        return result.data;
+    } catch (error) {
+        console.error("Error loading admin stats:", error);
+        return { totalUsers: 0, totalProducts: 0, totalOrders: 0 };
+    }
+}
 export const adminUserSearch = async (search) => {
     const req = await fetch(`${process.env.SERVER_URL}/app/admin/users?search=${search}`, { cache: 'no-store' })
     const res = req.ok ? await req.json() : [];

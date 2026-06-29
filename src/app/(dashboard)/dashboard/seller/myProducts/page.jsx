@@ -6,6 +6,7 @@ import { Card, Button, Chip } from "@heroui/react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { getMyProducts } from "@/lib/api/seller/action";
 
 const MyProductPage = () => {
   const { data: session, isPending } = authClient.useSession();
@@ -15,23 +16,15 @@ const MyProductPage = () => {
   const [error, setError] = useState("");
   const userEmail = session?.user?.email;
 
-  useEffect(() => {
+useEffect(() => {
     if (!userEmail) return;
     const controller = new AbortController();
+
     const fetchProducts = async () => {
       try {
-        setLoading(true); setError("");
-        const response = await fetch(`http://localhost:5000/app/my-products?email=${userEmail}`,
-          {
-            signal: controller.signal,
-          }
-        );
-        if (!response.ok) {
-          throw new Error("Failed to fetch products");
-        }
-        const data = await response.json();
-        console.log(data);
-        
+        setLoading(true); 
+        setError("");
+        const data = await getMyProducts(userEmail, { signal: controller.signal });
         setProducts(Array.isArray(data) ? data : []);
       } catch (err) {
         if (err.name !== "AbortError") {
@@ -97,7 +90,6 @@ const MyProductPage = () => {
                   <Link color="primary" href={`/dashboard/seller/myProducts/${product._id}`}>
                     <Button color="primary">View Details</Button>
                   </Link>
-                  {/* <Button  onClick={() => router.push(`/myProducts/${product._id}`)}> View Details </Button> */}
                 </div>
               </div>
             </Card>
