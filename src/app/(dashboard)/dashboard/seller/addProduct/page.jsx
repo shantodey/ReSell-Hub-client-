@@ -65,7 +65,7 @@ const ADDProductPage = () => {
             setUploadError(err.message || "Something went wrong during upload.");
         } finally {
             setIsUploading(false);
-            if (fileInputRef.current) fileInputRef.current.value = ""; // ইনপুট রিসেট
+            if (fileInputRef.current) fileInputRef.current.value = ""; 
         }
     };
 
@@ -73,7 +73,7 @@ const ADDProductPage = () => {
         setImages((prev) => prev.filter((_, index) => index !== indexToRemove));
     };
 
-    // ফর্ম সাবমিশন হ্যান্ডলার
+
     const onSubmit = async (data) => {
         if (images.length === 0) {
             setFormError("Please upload at least one image for your product.");
