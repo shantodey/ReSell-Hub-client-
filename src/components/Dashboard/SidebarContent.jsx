@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { Chip, Avatar } from '@heroui/react';
 import { motion } from "motion/react";
 import { FiChevronRight, FiLogOut } from 'react-icons/fi';
-import logo from '../../../assets/logo.png'; 
+import logo from '@/assets/logo.png'; 
 
 const SidebarContent = ({ onNavigate, menuItems, pathname, isPending, image, name, role, logOut }) => {
     return (

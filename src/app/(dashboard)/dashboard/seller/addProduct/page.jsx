@@ -1,5 +1,5 @@
 "use client";
-import DashboardHeadding from '@/app/Component/Dashboard/DashboardHeadding';
+import DashboardHeadding from '@/components/Dashboard/DashboardHeadding';
 import { useRef, useState } from "react";
 import { Form, TextField, InputGroup, Label, FieldError, Button, Spinner } from "@heroui/react";
 import { FiPlus, FiTrash2, FiTag, FiDollarSign, FiInfo, FiLayers, FiCamera } from "react-icons/fi";

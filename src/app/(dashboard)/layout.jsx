@@ -1,5 +1,5 @@
 import { Toaster } from "react-hot-toast";
-import Sidebar from "../Component/Dashboard/Sidebar";
+import Sidebar from "@/components/Dashboard/Sidebar";
 
 const DashbordLayoutPage = ({ children }) => {
   return (

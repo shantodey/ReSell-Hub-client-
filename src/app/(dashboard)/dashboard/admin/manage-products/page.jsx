@@ -1,5 +1,5 @@
 
-import ProductTableClient from '@/app/Component/Dashboard/ProductTableClient';
+import ProductTableClient from '@/components/Dashboard/ProductTableClient';
 import { fetchAdminProducts } from '@/lib/api/admin/adminApi';
 
 

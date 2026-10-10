@@ -1,4 +1,4 @@
-import ProductCard from "@/app/Component/ProductCard";
+import ProductCard from "@/components/ProductCard";
 import { prodectData } from "@/lib/api/prodectData";
 import { Pagination } from "@heroui/react";
 import { Table } from "@heroui/react";

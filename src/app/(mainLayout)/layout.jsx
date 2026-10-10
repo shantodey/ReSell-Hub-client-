@@ -1,6 +1,6 @@
 import React from 'react';
-import Navber from '../Component/Navber';
-import Footer from '../Component/Footer';
+import Navber from '../../components/Navber';
+import Footer from '../../components/Footer';
 import { Toaster } from 'react-hot-toast';
 
 const layout = ({ children }) => {

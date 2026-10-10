@@ -1,9 +1,9 @@
 
-import HeroSectionPage from '../Component/HeroSection';
-import LatestProduct from '../Component/LatestProduct';
-import MarketplaceStatsPage from '../Component/MarketplaceStatsPage';
-import SuccessStories from '../Component/SuccessStories';
-import SustainabilityImpact from '../Component/SustainabilityImpact';
+import HeroSectionPage from '../../components/HeroSection';
+import LatestProduct from '../../components/LatestProduct';
+import MarketplaceStatsPage from '../../components/MarketplaceStatsPage';
+import SuccessStories from '../../components/SuccessStories';
+import SustainabilityImpact from '../../components/SustainabilityImpact';
 
 
 const page = () => {

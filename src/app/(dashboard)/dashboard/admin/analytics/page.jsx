@@ -1,4 +1,4 @@
-import PlatformChartsClient from '@/app/Component/Dashboard/admin/PlatformChartsClient';
+import PlatformChartsClient from '@/components/Dashboard/admin/PlatformChartsClient';
 import React from 'react';
 
 

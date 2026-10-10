@@ -1,4 +1,4 @@
-import ProductDetailsClient from "@/app/Component/ProductDetailsClient";
+import ProductDetailsClient from "@/components/ProductDetailsClient";
 import { getSingleProduct } from "@/lib/api/prodectData";
 
 

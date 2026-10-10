@@ -3,15 +3,16 @@ import { useEffect, useState } from "react";
 import { Avatar, Dropdown, Label } from "@heroui/react";
 import { CiMenuFries } from "react-icons/ci";
 import { IoIosLogOut, IoMdClose } from "react-icons/io";
-import { FiShoppingCart, FiUser } from "react-icons/fi";
+
 import { IoSettingsOutline } from "react-icons/io5";
 import Link from "next/link";
 import { authClient } from "@/lib/auth-client";
 import Image from "next/image";
-import logo from '../../assets/logo.png'
+import logo from '@/assets/logo.png'
 import { RiShoppingCartLine } from "react-icons/ri";
 import { cheackOutProdectData } from "@/lib/api/prodectData";
 import { usePathname } from "next/navigation";
+import { User } from "lucide-react";
 const Navber = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const { data: session, isPending } = authClient.useSession();
@@ -48,12 +49,12 @@ const Navber = () => {
                         {isMenuOpen ? (<IoMdClose />) : (<CiMenuFries />)}
                     </button>
                     <Link href={'/'}>
-                    <Image src={logo} alt='logo' height={40} width={70} />
+                        <Image src={logo} alt='logo' height={40} width={70} />
                     </Link>
                 </div>
                 <ul className="hidden items-center gap-4 md:flex">
-                    <li><Link href="/" className={pathname === "/" ? "text-blue-600 font-bold" : "text-gray-600"}>  Home</Link></li>
-                    <li> <Link href="/prodect" className={pathname === "/prodect" ? "text-blue-600 font-bold" : "text-gray-600"}> Prodect</Link></li>
+                    <li><Link href="/" className= {pathname === "/" ? "text-blue-600 font-bold font-manrope" : "text-gray-600"}>  Home</Link></li>
+                    <li> <Link href="/prodect" className={pathname === "/prodect" ? "text-blue-600 font-bold " : "text-gray-600 font-manrope"}> Prodect</Link></li>
                     <li>{isPending ? (<span>Dashboard</span>) : (<Link href={`/dashboard/${role}`}>Dashboard</Link>)}</li>
                 </ul>
                 {session?.user ? (
@@ -93,7 +94,7 @@ const Navber = () => {
                                 <Dropdown.Menu>
                                     <Dropdown.Item id="profile" textValue="Profile">
                                         <Link className="flex items-center gap-2" href={`/dashboard/${role}/profile`}>
-                                            <FiUser className="size-3.5 text-muted" />
+                                            <User  className="size-3.5 text-muted" />
                                             <Label>Profile</Label>
                                         </Link>
                                     </Dropdown.Item>
@@ -105,13 +106,13 @@ const Navber = () => {
                             </Dropdown.Popover>
                         </Dropdown>
                     </div>
-                ) : <ul>
-                    <li className="bg-blue-500 text-white px-2">
-                        <Link href={'/login'}>Login</Link>
-                        /
-                        <Link href={'/signup'}>Register</Link>
-                    </li>
-                </ul>
+                ) :
+                    <div className="inline-flex items-center gap-2 rounded-lg border border-blue-500 px-4 py-1.5 text-blue-500 hover:bg-blue-50 transition-colors">
+                        <User className="h-4 w-4" />
+                        <Link href="/login" className="hover:text-blue-600">Login</Link>
+                        <span className="text-blue-400">/</span>
+                        <Link href="/signup" className="hover:text-blue-600">Register</Link>
+                    </div>
                 }
             </header>
 

@@ -1,5 +1,5 @@
 
-import AdminOverView from '@/app/Component/Dashboard/admin/AdminOverView';
+import AdminOverView from '@/components/Dashboard/admin/AdminOverView';
 
 
 const OverviewPage = () => {

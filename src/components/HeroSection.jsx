@@ -41,7 +41,7 @@ const HeroSectionPage = () => {
         <section className="relative w-full min-h-[650px] bg-gradient-to-br from-slate-50 via-white to-blue-50/20 overflow-hidden py-12 lg:py-20 px-4 md:px-8 max-w-7xl mx-auto flex items-center">
             <motion.div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center w-full" initial="hidden" animate="visible" variants={containerVariants} >
                 <div className="lg:col-span-5 flex flex-col space-y-6 z-10">
-                    <motion.h1 variants={fadeInUp} className="text-4xl md:text-5xl lg:text-6xl font-black text-slate-950 tracking-tight leading-[1.15]" >
+                    <motion.h1 variants={fadeInUp} className="text-4xl font-manrope md:text-5xl lg:text-6xl font-black text-slate-950 tracking-tight leading-[1.15]" >
                         Buy & Sell Quality <br />
                         Pre-Owned Products <br />
                         With <span className="text-emerald-600 relative inline-block">Confidence</span>

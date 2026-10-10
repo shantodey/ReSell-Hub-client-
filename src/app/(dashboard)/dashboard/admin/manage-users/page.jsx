@@ -1,4 +1,4 @@
-import UserTableClient from '@/app/Component/Dashboard/UserTableClient';
+import UserTableClient from '@/components/Dashboard/UserTableClient';
 import { adminUserSearch } from '@/lib/api/admin/adminApi';
 
 
